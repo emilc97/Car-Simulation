@@ -6,100 +6,97 @@
 
 using namespace std; 
 
-template<typename T>
-struct Position 
+template<typename T> 
+struct Position
 {
-	T x_pos; 
-	T y_pos; 
-	Position(T x_pos = T(), T y_pos = T()) {}; 
+	using value_type = T; //making the type publicly accessible (metapr.) 
+	T x; 
+	T y; 
+	Position(T y = T(), T x = T()) : x{ x }, y{ y } {}
+	~Position() = default; 
+};
+
+enum Direction
+{
+	South = 0,
+	West,
+	North,
+	East
+};
+
+class Trajectory
+{
+	Direction _dir; 
+	public:
+	Trajectory(Direction dir = North) : _dir{ dir } {};
+	Trajectory& operator++(int) noexcept
+	{
+		_dir = static_cast<Direction>(_dir + 1); 
+		return *this; 
+	}
+	//Conversion operator 
+	Trajectory& operator--(int) noexcept
+	{
+		_dir = static_cast<Direction>(_dir - 1); 
+		return *this; 
+	}
+	//conversion operator to be treated as an enum 
+	operator Direction()
+	{
+		return _dir; 
+	}
 };
 
 class Vehicle
 {
-protected: 
-	Position<int> coord; 
-public:
-	Vehicle(int x = 0, int y = 0) : coord{ x,y } {}; 
-	void SetCoord(int x, int y) noexcept
-	{
-		coord.x_pos = x; 
-		coord.y_pos = y; 
-	}
+	protected: 
+	Position<int> coordinates; 
+	Trajectory traject; 
+	public: 
 	virtual void Left() = 0; 
 	virtual void Right() = 0; 
-	virtual void Forward() = 0;
-	virtual void Back() = 0;
-	int XPosition() const noexcept
-	{
-		return coord.x_pos;
-	}
-	int YPosition() const noexcept
-	{
-		return coord.y_pos;
-	}
-
-	~Vehicle() {}; 
+	virtual void Forward() = 0; 
+	virtual void Back() = 0; 
+	Position<int>& GetCoordinates() noexcept; 
+	void SetCoordinates(int x, int y) noexcept; 
+	Vehicle(int x = 0, int y = 0) : coordinates{ x,y } {}; 
+	~Vehicle() = default; 
 };
 
 class Car : public Vehicle
 {
 	int _diameter; 
-public: 
-	Car(int diameter) : _diameter{ diameter } {};
-    virtual void Left() override
+	public: 
+	Car(int diameter) : _diameter{ diameter } {}; 
+	virtual void Left() override
 	{
-		coord.x_pos--; 
+		traject++; 
 	}
 	virtual void Right() override
 	{
-		coord.x_pos++;
+		traject++; 
 	}
-	virtual void Forward() override
-	{
-		coord.y_pos++;
-	}
-	virtual void Back() override
-	{
-		coord.y_pos++;
-	}
-	~Car() {}; 
+	virtual void Forward() override; 
+	virtual void Back() override; 
 };
 
-
-template<typename V, typename... Args>
+template<typename V, typename... Args> 
 class Room
 {
 	int _width; 
 	int _length; 
 	unique_ptr<V> _ptr; 
-	friend ostream& operator <<(ostream& os, const Room& obj) noexcept
+	friend ostream& operator << (ostream& os, const Room& obj) 
 	{
-		os << "Room (width: " << obj._width << ", length: " << obj._length << ")" << endl; 
-		os << "Car Position: (" << obj._ptr->XPosition() << ", " << obj._ptr->YPosition() << ")" << endl; 
+		os << "Room Size: " << obj._width << "x" << obj._length << "m" << endl; 
+		os << "Vehicle position: (" << obj._ptr->GetCoordinates().x << "," << obj._ptr->GetCoordinates().y << ")" << endl;
 		return os; 
 	}
-	using vehicle_type = V; 
 	public: 
-	Room(int width, int length, Args&&... args) : _width{ width }, _length{ length }
-	{
-		_ptr = make_unique<V>(args...); 
-	}
-	InitialPos(int x, int y)
-	{
+	Room(int width, int length, Args&&... args); 
+	explicit Room(int width, int length, V* ptr); 
+	Room(int width, int length, unique_ptr<int>& ptr); 
+	
 
-	}
-	//Getters 
-	int Width() const noexcept 
-	{
-		return _width; 
-	}
-	int Length() const noexcept
-	{
-		return _length; 
-	}
-	~Room() = default; 
 };
-
-
-
 
