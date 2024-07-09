@@ -79,7 +79,10 @@ Room<V, Args...>::Room(int width, int length, Args&&... args) : _width{ width },
 int main()
 {
 	//Room<Car, int > r(1, 2, 3); 
-	Room<Car, int> r2(1, 2, new Car(1));
+	Room<Car, int> r2(1, 2, new Car(1)); 
+	r2.Initial_Position(2, 2); 
+	r2.Left(); 
+	r2.Back(); 
 	cout << r2 << endl; 
 	return 0; 
 }

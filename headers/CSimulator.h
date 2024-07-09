@@ -89,14 +89,35 @@ class Room
 	friend ostream& operator << (ostream& os, const Room& obj) 
 	{
 		os << "Room Size: " << obj._width << "x" << obj._length << "m" << endl; 
-		os << "Vehicle position: (" << obj._ptr->GetCoordinates().x << "," << obj._ptr->GetCoordinates().y << ")" << endl;
+		os << "Vehicle position: (" << obj._ptr->GetCoordinates().x << ","; 
+		os << obj._ptr->GetCoordinates().y << ")" << endl;
 		return os; 
 	}
 	public: 
 	Room(int width, int length, Args&&... args); 
 	explicit Room(int width, int length, V* ptr); 
-	Room(int width, int length, unique_ptr<int>& ptr); 
-	
+	void Left()
+	{
+		_ptr->Left(); 
+	}
+	void Right()
+	{
+		_ptr->Right(); 
+	}
+	void Forward()
+	{
+		_ptr->Forward(); 
+	}
+	void Back()
+	{
+		_ptr->Back(); 
+	}
+	void Initial_Position(int x, int y)
+	{
+		_ptr->SetCoordinates(x, y); 
+	}
+	Room(int width, int length, unique_ptr<int>&& ptr); 
+	~Room() = default; 
 
 };
 
