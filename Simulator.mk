@@ -1,5 +1,5 @@
 #makefile 
-include ../common.mk 
+include common.mk 
 
 TARGET := $(BIN)main 
 CPPFILES := $(wildcard $(SOURCE)*.cpp)
