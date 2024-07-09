@@ -59,14 +59,14 @@ clean:
 #use $wildcard for potential empty expansion 
 install: 
 	@read -p "Do you want to proceed installting the project (Y/N): " answer; \
-	if [ "$$answer" = "Y" ]; then \
+	if [ "$$answer" = "Y" ] || [ "$$answer" = "y" ]; then \
 		echo "Starting installation..."; \
 		mkdir -p $(BIN) $(HEADERS) $(BUILD) $(SOURCE) $(LIBRARIES); \
 		cp $(wildcard install/*.cpp) $(SOURCE); \
 		cp $(wildcard install/*.h) $(HEADERS); \
 		echo "Install Complete"; \
 	else \
-		exit 1; \
+		echo "Installation aborted"; \
 	fi
 
 	
