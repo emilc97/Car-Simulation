@@ -57,32 +57,25 @@ void Car::Back()
 	}
 }
 
-template<typename V, typename... Args>
-Room<V, Args...>::Room(int width, int length, unique_ptr<int>&& ptr) : _width{ width }, _length{ length }, _ptr{ move(ptr) } 
-{
 
-};
-
-template<typename V, typename... Args>
-Room<V, Args...>::Room(int width, int length, V* ptr) : _width{ width }, _length{ length }, _ptr{ ptr } 
-{
-
-};
-
-template<typename V, typename... Args> 
-Room<V, Args...>::Room(int width, int length, Args&&... args) : _width{ width }, _length{ length }, _ptr{ make_unique<V>(args...) }
-{
-
-}
 
 
 int main()
 {
 	//Room<Car, int > r(1, 2, 3); 
-	Room<Car, int> r2(1, 2, new Car(1)); 
-	r2.Initial_Position(2, 2); 
-	r2.Left(); 
-	r2.Back(); 
-	cout << r2 << endl; 
+	try
+	{
+		Room<Car, int> r2(8, 6, new Car(1));
+		r2.Initial_Position(2, 2);
+		r2.Right(); 
+		r2.Back(); 
+		r2.Back(); 
+		cout << r2 << endl;
+	}
+	catch (const exception& e)
+	{
+		cout << e.what() << endl; 
+	}
+	
 	return 0; 
 }

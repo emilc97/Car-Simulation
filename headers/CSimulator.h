@@ -31,13 +31,13 @@ class Trajectory
 	Trajectory(Direction dir = North) : _dir{ dir } {};
 	Trajectory& operator++(int) noexcept
 	{
-		_dir = static_cast<Direction>(_dir + 1); 
+		_dir = static_cast<Direction>((_dir + 1)%4);
 		return *this; 
 	}
 	//Conversion operator 
 	Trajectory& operator--(int) noexcept
 	{
-		_dir = static_cast<Direction>(_dir - 1); 
+		_dir = static_cast<Direction>((_dir - 1)%4);
 		return *this; 
 	}
 	//conversion operator to be treated as an enum 
@@ -59,6 +59,10 @@ class Vehicle
 	virtual void Back() = 0; 
 	Position<int>& GetCoordinates() noexcept; 
 	void SetCoordinates(int x, int y) noexcept; 
+	void PrintCoordinates()
+	{
+		cout << "(" << coordinates.x << "," << coordinates.y << ")" << endl; 
+	}
 	Vehicle(int x = 0, int y = 0) : coordinates{ x,y } {}; 
 	~Vehicle() = default; 
 };
@@ -70,7 +74,7 @@ class Car : public Vehicle
 	Car(int diameter) : _diameter{ diameter } {}; 
 	virtual void Left() override
 	{
-		traject++; 
+		traject--; 
 	}
 	virtual void Right() override
 	{
@@ -94,30 +98,75 @@ class Room
 		return os; 
 	}
 	public: 
-	Room(int width, int length, Args&&... args); 
-	explicit Room(int width, int length, V* ptr); 
+	Room(int width, int length, Args&&... args) : _width{ width }, _length{ length }, _ptr{ make_unique<V>(args...) }
+	{
+		if (width <= 0 || length <= 0)
+			throw invalid_argument("Width and length shall only be positive");
+	};
+	explicit Room(int width, int length, V* ptr) : _width{ width }, _length{ length }, _ptr{ ptr }
+	{
+		if (width <= 0 || length <= 0)
+			throw invalid_argument("Width and length shall only be positive");
+
+	};
+	Room(int width, int length, unique_ptr<int>&& ptr) : _width{ width }, _length{ length }, _ptr{ move(ptr) }
+	{
+		if (width <= 0 || length <= 0)
+			throw invalid_argument("Width and length shall only be positive");
+	};
 	void Left()
 	{
 		_ptr->Left(); 
+		_ptr->PrintCoordinates(); 
 	}
 	void Right()
 	{
 		_ptr->Right(); 
+		_ptr->PrintCoordinates();
 	}
-	void Forward()
-	{
-		_ptr->Forward(); 
-	}
-	void Back()
-	{
-		_ptr->Back(); 
-	}
+	void Forward(); 
+	void Back(); 
 	void Initial_Position(int x, int y)
 	{
 		_ptr->SetCoordinates(x, y); 
 	}
-	Room(int width, int length, unique_ptr<int>&& ptr); 
+	
 	~Room() = default; 
 
 };
 
+template<typename V, typename... Args> 
+void Room<V,Args...>::Back()
+{
+	_ptr->Back();
+	_ptr->PrintCoordinates();
+	if (_ptr->GetCoordinates().x > _width)
+		throw out_of_range("The Vehicle hit the rightside wall");
+
+	else if (_ptr->GetCoordinates().x < 0)
+		throw out_of_range("The vehicle hit the leftmost wall");
+
+	else if (_ptr->GetCoordinates().y > _length)
+		throw out_of_range("The vehicle hit the upper wall");
+
+	else if (_ptr->GetCoordinates().y < 0)
+		throw out_of_range("The vehicle hit the bottom wall");
+}
+
+template<typename V, typename... Args>
+void Room<V, Args...>::Forward()
+{
+	_ptr->Forward();
+	_ptr->PrintCoordinates();
+	if (_ptr->GetCoordinates().x > _width)
+		throw out_of_range("The Vehicle hit the rightside wall");
+
+	else if (_ptr->GetCoordinates().x < 0)
+		throw out_of_range("The vehicle hit the leftmost wall");
+
+	else if (_ptr->GetCoordinates().y > _length)
+		throw out_of_range("The vehicle hit the upper wall");
+
+	else if (_ptr->GetCoordinates().y < 0)
+		throw out_of_range("The vehicle hit the bottom wall");
+}
