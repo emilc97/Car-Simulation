@@ -39,7 +39,7 @@ $(TARGET): $(OBJECTS)
 	$(CC) $(CXXFLAGS) $^ -o $@ 
 
 #order-only prerequisite
-$(BUILD)%.o: %.cpp %.h | $(dirs)       
+$(BUILD)%.o: $(SOURCE)%.cpp $(HEADERS)%.h | $(dirs)       
 	$(CC) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@ 
 
 
