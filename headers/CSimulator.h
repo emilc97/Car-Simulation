@@ -78,7 +78,7 @@ class Car : public Vehicle
 		os << "Car Position (" << obj.GetCoordinates().x << "," << obj.GetCoordinates().y << endl; 
 		return os; 
 	}
-	Car(int x, int y) : Vehicle{ x,y } {};
+	Car(int x, int y, Direction dir) : Vehicle{ x,y }, traject{ dir } {};
 	virtual void Left() override
 	{
 		traject--; 
@@ -110,18 +110,23 @@ class Room
 	{
 		if (width <= 0 || length <= 0)
 			throw invalid_argument("Width and length shall only be positive");
-	};
+	}
 	explicit Room(int width, int length, V* ptr) : _width{ width }, _length{ length }, _ptr{ ptr }
 	{
 		if (width <= 0 || length <= 0)
 			throw invalid_argument("Width and length shall only be positive");
 
-	};
-	Room(int width, int length, unique_ptr<int>&& ptr) : _width{ width }, _length{ length }, _ptr{ move(ptr) }
+	}
+	Room(int width, int length, unique_ptr<V>&& ptr) : _width{ width }, _length{ length }, _ptr{ move(ptr) }
 	{
 		if (width <= 0 || length <= 0)
 			throw invalid_argument("Width and length shall only be positive");
-	};
+	}
+	Room(int width, int length, V&& obj) : _width{ width }, _length{ length }
+	{
+		_ptr = operator new(sizeof(V)); 
+		new (_ptr) V(move(obj));
+	}
 	void Left()
 	{
 		_ptr->Left(); 

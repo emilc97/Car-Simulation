@@ -2,12 +2,14 @@
 include common.mk 
 
 TARGET := $(BIN)main 
+TEST := $(BIN)test
 CPPFILES := $(wildcard $(SOURCE)*.cpp)
 OBJECTS := $(patsubst $(SOURCE)%.cpp, $(BUILD)%.o, $(CPPFILES))
+OBJECTS := $(filter-out test.o,$(OBJECTS))
 
 .PHONY: dirs clean install uninstall all info
 
-all: $(TARGET)
+all: $(TARGET) $(TEST)
 
 
 info: 
@@ -36,6 +38,9 @@ info:
 	
 #$<, $@ generic usage, automatic variables 
 $(TARGET): $(OBJECTS)
+	$(CC) $(CXXFLAGS) $^ -o $@ 
+
+$(TEST): $(OBJECTS) $(BUILD)test.o 
 	$(CC) $(CXXFLAGS) $^ -o $@ 
 
 #order-only prerequisite
