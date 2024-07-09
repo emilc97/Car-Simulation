@@ -53,13 +53,29 @@ public:
 	Trajectory(Direction dir = North) : _dir{ dir } {};
 	Trajectory& operator++(int) noexcept
 	{
-		_dir = static_cast<Direction>((_dir + 1) % 4);
+		if (_dir == South)
+			_dir = West;
+		else if (_dir == West)
+			_dir = North;
+		else if (_dir == North)
+			_dir = East;
+		else if (_dir == East)
+			_dir = South;
+
 		return *this;
 	}
 	//Conversion operator 
 	Trajectory& operator--(int) noexcept
 	{
-		_dir = static_cast<Direction>((_dir - 1) % 4);
+		if (_dir == South)
+			_dir = East;
+		else if (_dir == West)
+			_dir = South;
+		else if (_dir == North)
+			_dir = West;
+		else if (_dir == East)
+			_dir = North; 
+
 		return *this;
 	}
 	//conversion operator to be treated as an enum 
@@ -67,6 +83,7 @@ public:
 	{
 		return _dir;
 	}
+
 };
 
 class Car : public Vehicle
@@ -89,6 +106,7 @@ class Car : public Vehicle
 	}
 	virtual void Forward() override; 
 	virtual void Back() override; 
+
 };
 
 template<typename V, typename... Args> 
@@ -124,8 +142,10 @@ class Room
 	}
 	Room(int width, int length, V&& obj) : _width{ width }, _length{ length }
 	{
-		_ptr = operator new(sizeof(V)); 
-		new (_ptr) V(move(obj));
+		auto ptr = operator new(sizeof(V)); 
+		new (ptr) V(move(obj));
+		_ptr = move(unique_ptr<V>(static_cast<V*>(ptr))); 
+		
 	}
 	void Left()
 	{
