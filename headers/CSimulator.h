@@ -6,6 +6,14 @@
 
 using namespace std; 
 
+enum Direction
+{
+	South = 0,
+	West,
+	North,
+	East
+};
+
 template<typename T> 
 struct Position
 {
@@ -16,42 +24,11 @@ struct Position
 	~Position() = default; 
 };
 
-enum Direction
-{
-	South = 0,
-	West,
-	North,
-	East
-};
-
-class Trajectory
-{
-	Direction _dir; 
-	public:
-	Trajectory(Direction dir = North) : _dir{ dir } {};
-	Trajectory& operator++(int) noexcept
-	{
-		_dir = static_cast<Direction>((_dir + 1)%4);
-		return *this; 
-	}
-	//Conversion operator 
-	Trajectory& operator--(int) noexcept
-	{
-		_dir = static_cast<Direction>((_dir - 1)%4);
-		return *this; 
-	}
-	//conversion operator to be treated as an enum 
-	operator Direction()
-	{
-		return _dir; 
-	}
-};
 
 class Vehicle
 {
 	protected: 
 	Position<int> coordinates; 
-	Trajectory traject; 
 	public: 
 	virtual void Left() = 0; 
 	virtual void Right() = 0; 
@@ -67,11 +44,41 @@ class Vehicle
 	~Vehicle() = default; 
 };
 
+
+
+class Trajectory
+{
+	Direction _dir;
+public:
+	Trajectory(Direction dir = North) : _dir{ dir } {};
+	Trajectory& operator++(int) noexcept
+	{
+		_dir = static_cast<Direction>((_dir + 1) % 4);
+		return *this;
+	}
+	//Conversion operator 
+	Trajectory& operator--(int) noexcept
+	{
+		_dir = static_cast<Direction>((_dir - 1) % 4);
+		return *this;
+	}
+	//conversion operator to be treated as an enum 
+	operator Direction()
+	{
+		return _dir;
+	}
+};
+
 class Car : public Vehicle
 {
-	int _diameter; 
+	Trajectory traject;
 	public: 
-	Car(int diameter) : _diameter{ diameter } {}; 
+	friend ostream& operator << (ostream& os, Car& obj) 
+	{
+		os << "Car Position (" << obj.GetCoordinates().x << "," << obj.GetCoordinates().y << endl; 
+		return os; 
+	}
+	Car(int x, int y) : Vehicle{ x,y } {};
 	virtual void Left() override
 	{
 		traject--; 
@@ -92,8 +99,9 @@ class Room
 	unique_ptr<V> _ptr; 
 	friend ostream& operator << (ostream& os, const Room& obj) 
 	{
-		os << "Room Size: " << obj._width << "x" << obj._length << "m" << endl; 
-		os << "Vehicle position: (" << obj._ptr->GetCoordinates().x << ","; 
+		os << "Room Size: " << obj._width << "x" << obj._length << " m" << endl; 
+		os << "Vehicle position: (" << obj._ptr->GetCoordinates().x; 
+		os << ","; 
 		os << obj._ptr->GetCoordinates().y << ")" << endl;
 		return os; 
 	}
@@ -117,18 +125,24 @@ class Room
 	void Left()
 	{
 		_ptr->Left(); 
-		_ptr->PrintCoordinates(); 
 	}
 	void Right()
 	{
 		_ptr->Right(); 
-		_ptr->PrintCoordinates();
 	}
 	void Forward(); 
 	void Back(); 
 	void Initial_Position(int x, int y)
 	{
 		_ptr->SetCoordinates(x, y); 
+	}
+	int GetXPosition() const
+	{
+		return _ptr->GetCoordinates().x; 
+	}
+	int GetYPosition() const
+	{
+		return _ptr->GetCoordinates().y;
 	}
 	
 	~Room() = default; 

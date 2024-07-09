@@ -65,12 +65,15 @@ int main()
 	//Room<Car, int > r(1, 2, 3); 
 	try
 	{
-		Room<Car, int> r2(8, 6, new Car(1));
+		Room<Car, int,int> r2(20, 16, 1,2);
 		r2.Initial_Position(2, 2);
+		cout << r2 << endl;
+		r2.Forward(); 
+		r2.Forward(); 
 		r2.Right(); 
 		r2.Back(); 
 		r2.Back(); 
-		cout << r2 << endl;
+		
 	}
 	catch (const exception& e)
 	{
