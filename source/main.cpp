@@ -1,8 +1,8 @@
 #include <iostream>
-#include "CSimulator.h"
+#include "Simulator.h"
 #include <sstream>
 #include <string>
-
+#include <Car.h>
 using namespace std; 
 
 /* @brief Set rooms size (width x length) 

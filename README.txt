@@ -4,6 +4,7 @@ Project: Radio Car Simulation
 OS: Linux/Ubuntu
 Build System: Make 
 
+
 *************************************Description*************************************************
 This projects simulates a vehicle in a 2-dimensional space. 
 Each vehicle (e.g., car) inherits from abstract base class which requires 
@@ -69,5 +70,6 @@ CXXFLAGS, CPPFLAGS, directories and more.
 - Race Conditions: None. Single-threaded. 
 - Exception handling. The class Room constructor and member methods may throw 
   and shall be put within try black to avoid call to std::terminate. 
--
+
+
 

@@ -42,7 +42,7 @@ $(TARGET): $(filter-out $(BUILD)test.o,$(OBJECTS))
 $(TEST): $(filter-out $(BUILD)main.o, $(OBJECTS)) 
 	$(CC) $(CXXFLAGS) $^ -o $@ 
 
-$(BUILD)test.o: test.cpp test.h CSimulator.h 
+$(BUILD)test.o: test.cpp test.h Simulator.h 
 	$(CC) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@ 
 #order-only prerequisite
 $(BUILD)%.o: $(SOURCE)%.cpp $(HEADERS)%.h | $(dirs)       

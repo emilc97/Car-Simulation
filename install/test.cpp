@@ -1,6 +1,6 @@
-#include "CSimulator.h"
+#include "Simulator.h"
 #include <iostream>
-
+#include "Car.h"
 using namespace std;
 
 
