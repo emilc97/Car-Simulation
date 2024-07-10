@@ -25,7 +25,7 @@ public:
 
 };
 
-class Car : public Vehicle
+class Car : public Vehicle<int>
 {
 	Trajectory traject;
 public:

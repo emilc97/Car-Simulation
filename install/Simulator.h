@@ -38,17 +38,18 @@ struct Position
 * PrintCoordinates and SetCoordinates can be overloaded in the inherited class 
 * for specialization. 
 */
+template<typename T>
 class Vehicle
 {
 	protected: 
-	Position<int> coordinates; 
+	Position<T> coordinates; 
 	public: 
 	virtual void Left() = 0; 
 	virtual void Right() = 0; 
 	virtual void Forward() = 0; 
 	virtual void Back() = 0; 
-	Position<int>& GetCoordinates() noexcept; 
-	void SetCoordinates(int x, int y) noexcept; 
+	Position<T>& GetCoordinates() noexcept; 
+	void SetCoordinates(T x, T y) noexcept; 
 	/*@brief  Print vehicle coordinates 
 	* @retval None 
 	*/
@@ -57,9 +58,35 @@ class Vehicle
 		cout << "(" << coordinates.x << "," << coordinates.y << ")" << endl; 
 	}
 	
-	Vehicle(int x = 0, int y = 0);
+	Vehicle(T x = T(), T y = T());
 	~Vehicle() = default; 
 };
+
+/*@brief Vehicle constructor
+* @param x: x coordinate
+* @param y: y coordinate
+* @throw  : x and y coordinates must be non-negative
+*/
+template<typename T>
+void Vehicle<T>::SetCoordinates(T x, T y) noexcept
+{
+	coordinates.x = x;
+	coordinates.y = y;
+}
+
+template<typename T>
+Vehicle<T>::Vehicle(T x, T y) : coordinates{ x,y }
+{
+	if (x < 0 || y < 0)
+		throw out_of_range("Coordinates must be non-negative");
+}
+
+template<typename T>
+Position<T>& Vehicle<T>::GetCoordinates() noexcept
+{
+	return coordinates;
+}
+
 
 template<typename V, typename... Args> 
 class Room
