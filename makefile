@@ -69,7 +69,7 @@ clean:
 #invoke commands that are dependent on $abspath in same subshell 
 #use $wildcard for potential empty expansion 
 install: 
-	@read -p "Do you want to proceed installting the project (Y/N): " answer; \
+	@read -p "Do you want to proceed installing the project (Y/N): " answer; \
 	if [ "$$answer" = "Y" ] || [ "$$answer" = "y" ]; then \
 		echo "Starting installation..."; \
 		mkdir -p $(BIN) $(HEADERS) $(BUILD) $(SOURCE) $(LIBRARIES); \

@@ -39,7 +39,7 @@ public:
 		os << "Car Position (" << obj.GetCoordinates().x << "," << obj.GetCoordinates().y << endl;
 		return os;
 	}
-	Car(int x, int y, Direction dir) : Vehicle{ x,y }, traject{ dir } {};
+	Car(int x, int y, Direction dir, int diameter = 1) : Vehicle{ x,y, diameter }, traject{ dir } {};
 	virtual void Left() override
 	{
 		traject--;

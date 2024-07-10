@@ -42,6 +42,7 @@ template<typename T>
 class Vehicle
 {
 	protected: 
+	T diameter; 
 	Position<T> coordinates; 
 	public: 
 	virtual void Left() = 0; 
@@ -58,7 +59,11 @@ class Vehicle
 		cout << "(" << coordinates.x << "," << coordinates.y << ")" << endl; 
 	}
 	
-	Vehicle(T x = T(), T y = T());
+	T GetDiameter() const noexcept
+	{
+		return diameter; 
+	}
+	Vehicle(T x = T(), T y = T(), T diameter = T());
 	~Vehicle() = default; 
 };
 
@@ -75,7 +80,7 @@ void Vehicle<T>::SetCoordinates(T x, T y) noexcept
 }
 
 template<typename T>
-Vehicle<T>::Vehicle(T x, T y) : coordinates{ x,y }
+Vehicle<T>::Vehicle(T x, T y, T diameter) : diameter{ diameter }, coordinates { x, y }
 {
 	if (x < 0 || y < 0)
 		throw out_of_range("Coordinates must be non-negative");
@@ -207,13 +212,13 @@ void Room<V, Args...>::Forward()
 {
 	_ptr->Forward();
 	_ptr->PrintCoordinates();
-	if (_ptr->GetCoordinates().x > _width)
+	if (_ptr->GetCoordinates().x > _width - _ptr->GetDiameter())
 		throw out_of_range("The Vehicle hit the rightside wall");
 
 	else if (_ptr->GetCoordinates().x < 0)
 		throw out_of_range("The vehicle hit the leftmost wall");
 
-	else if (_ptr->GetCoordinates().y > _length)
+	else if (_ptr->GetCoordinates().y > _length - _ptr->GetDiameter())
 		throw out_of_range("The vehicle hit the upper wall");
 
 	else if (_ptr->GetCoordinates().y < 0)
