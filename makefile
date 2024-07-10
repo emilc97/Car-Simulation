@@ -42,12 +42,17 @@ $(TARGET): $(filter-out $(BUILD)test.o,$(OBJECTS))
 $(TEST): $(filter-out $(BUILD)main.o, $(OBJECTS)) 
 	$(CC) $(CXXFLAGS) $^ -o $@ 
 
-$(BUILD)test.o: test.cpp test.h Simulator.h 
+$(BUILD)test.o: test.cpp Simulator.h 
 	$(CC) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@ 
+
+#with header file
 #order-only prerequisite
 $(BUILD)%.o: $(SOURCE)%.cpp $(HEADERS)%.h | $(dirs)       
 	$(CC) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@ 
 
+#without header files 
+$(BUILD)%.o: $(SOURCE)%.cpp | $(dirs)       
+	$(CC) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@ 
 
 #out-of-source build 
 dirs: 
