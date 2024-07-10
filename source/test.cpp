@@ -47,7 +47,7 @@ void Constructors()
 	r5.Right();
 	r5.Forward();
 	cout << r5 << endl;
-	cout << "********************Constructors - END******************************" << endl; 
+	cout << "********************Constructors - END******************************" << "\n\n"; 
 }
 
 void Member_Func()
@@ -60,11 +60,12 @@ void Member_Func()
 	cout << r << endl; 
 	cout << "Using member methods..." << endl; 
 	cout << "(" << r.GetXPosition() << "," << r.GetYPosition() << ")" << endl; 
-	cout << "********************Member Functions - END*************************" << endl;
+	cout << "********************Member Functions - END*************************" << "\n\n"; 
 }
 
 void Routes()
 {
+	cout << "*****************Routes Testing - START************************" << endl; 
 	Room<Car> r(25, 12, Car(4, 4, West)); 
 	r.Right(); 
 	r.Forward(); 
@@ -92,18 +93,22 @@ void Routes()
 	r.Forward(); 
 	r.Forward(); 
 	r.Forward(); 
-
-
+	cout << "********************Routes Testing - END*****************************" << "\n\n"; 
 }
+
 int main()
 {
 	//Room<Car, int > r(1, 2, 3); 
 	try
 	{
-		//Constructors();
-		//Member_Func(); 
-		Routes(); 
-
+		string str; 
+		Constructors();
+		Member_Func(); 
+		//Routes(); 
+		cout << "Enter a route (F- Forward, B-Back, L-Left, R-Right) and end with a newline" << endl; 
+		cin >> str; 
+		Room<Car> r(20, 10, Car(1, 2, North)); 
+		r.ChangeHeading(str); 
 	}
 	catch (const exception& e)
 	{

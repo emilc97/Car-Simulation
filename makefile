@@ -5,7 +5,6 @@ TARGET := $(BIN)main
 TEST := $(BIN)test
 CPPFILES := $(wildcard $(SOURCE)*.cpp)
 OBJECTS := $(patsubst $(SOURCE)%.cpp, $(BUILD)%.o, $(CPPFILES))
-OBJECTS := $(filter-out test.o,$(OBJECTS))
 
 .PHONY: dirs clean install uninstall all info
 
@@ -37,12 +36,14 @@ info:
 	@echo " Target:   : $(TARGET)\n"
 	
 #$<, $@ generic usage, automatic variables 
-$(TARGET): $(OBJECTS)
+$(TARGET): $(filter-out $(BUILD)test.o,$(OBJECTS))
 	$(CC) $(CXXFLAGS) $^ -o $@ 
 
-$(TEST): $(OBJECTS) $(BUILD)test.o 
+$(TEST): $(filter-out $(BUILD)main.o, $(OBJECTS)) 
 	$(CC) $(CXXFLAGS) $^ -o $@ 
 
+$(BUILD)test.o: test.cpp test.h CSimulator.h 
+	$(CC) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@ 
 #order-only prerequisite
 $(BUILD)%.o: $(SOURCE)%.cpp $(HEADERS)%.h | $(dirs)       
 	$(CC) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@ 
