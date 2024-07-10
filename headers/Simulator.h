@@ -191,13 +191,13 @@ void Room<V,Args...>::Back()
 {
 	_ptr->Back();
 	_ptr->PrintCoordinates();
-	if (_ptr->GetCoordinates().x > _width)
+	if (_ptr->GetCoordinates().x > _width - _ptr->GetDiameter())
 		throw out_of_range("The Vehicle hit the rightside wall");
 
 	else if (_ptr->GetCoordinates().x < 0)
 		throw out_of_range("The vehicle hit the leftmost wall");
 
-	else if (_ptr->GetCoordinates().y > _length)
+	else if (_ptr->GetCoordinates().y > _length - _ptr->GetDiameter())
 		throw out_of_range("The vehicle hit the upper wall");
 
 	else if (_ptr->GetCoordinates().y < 0)
