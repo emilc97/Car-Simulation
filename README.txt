@@ -4,7 +4,6 @@ Project: Radio Car Simulation
 OS: Linux/Ubuntu
 Build System: Make 
 
-
 [DESCRIPTION]
 This projects simulates a vehicle in a 2-dimensional space. 
 Each vehicle (e.g., car) inherits from abstract base class which requires 
@@ -13,6 +12,12 @@ Forward() and Back(). The 2-dimensional space is represented by the class 'Room'
 which monitors and manages control of the vehicle. If the vehicle hits any of the 
 walls an exception will be thrown, stack unwinding occurs, and the user will 
 prompted that the program has terminated. 
+
+The program is developed using templates and parameter packing to support 
+simulation of a wide range of vehicles that inherits from the abstract base 
+class. The vehicle is dynamically allocated to preserve stack space, and ensure 
+compatibility with future extensions of the vehicle class. 
+
 
 The Room class has a set of overloaded constructors that supports: 
 - Construction of the vehicle object using parameter packing, e.g., 
@@ -68,8 +73,15 @@ CXXFLAGS, CPPFLAGS, directories and more.
 None. Single-threaded application. 
 
 [EXCEPTION HANDLING]
-The class Room constructor and member methods may throw 
-  and shall be put within try black to avoid call to std::terminate. 
+The class Room constructor and member methods may throw and shall be put within try black to avoid call to std::terminate. 
+The following scenarios will throw an exception: 
+- A vehicle is constructed at a coordinate that is negative or outside of room. 
+- A vehicle is constructed having an invalid direction. Valid (North - 'N', East - 'E', South - 'S', West - 'W') 
+- If the initial position coordinates of the vehicle uses characters (e.g., 1 N, S 2) 
+- If the room width or length is set by using a character (e.g., 10 N, N 11)
+
+
+
 
 
 
