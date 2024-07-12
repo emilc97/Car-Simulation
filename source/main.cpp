@@ -13,10 +13,15 @@ using namespace std;
 void RoomSize(int& width, int& length)
 {
 	string str; 
-	cout << "Enter the size of the room (widht x length) separated by whitespace: ";
+	cout << "Enter the size of the room (width x length) separated by whitespace: ";
 	getline(cin, str); //read entire line, do not stop at whitespace 
 	istringstream isstream(str); //string stream for string to numeric conversion
-	isstream >> width >> length;
+	if (!(isstream >> width))
+		throw invalid_argument("Room width must be numeric"); 
+	if (!(isstream >> length))
+		throw invalid_argument("Room length must be numeric");
+	if (width == 0 || length == 0)
+		throw invalid_argument("Room width and length must be positive"); 
 }
 
 /* @brief Set vehicle position (x,y) and initial heading (S, W, N, E) 
@@ -31,7 +36,12 @@ void VehiclePosition(int& x, int& y, Direction& dir)
 	cout << "Enter the initial coordinates (position) of the car and heading (S, W, N, E):";
 	getline(cin, str);
 	istringstream isstream{ str }; 
-	isstream >> x >> y >> tmp; //string stream for string to numeric conversion
+	if (!(isstream >> x))
+		throw invalid_argument("X coordinate must be numeric");
+	if (!(isstream >> y))
+		throw invalid_argument("Y coordinate must be numeric");
+	isstream >> tmp; //string stream for string to numeric conversion
+
 	//set vehicle direction
 	if (tmp == string{ 'S' })
 		dir = South;

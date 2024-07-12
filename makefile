@@ -34,6 +34,7 @@ info:
 	@echo " Binaries  : $(BIN)\n" 
 	@echo " Build     : $(BUILD)\n"
 	@echo " Target:   : $(TARGET)\n"
+	@echo " Test      : $(TEST)\n"
 	
 #$<, $@ generic usage, automatic variables 
 $(TARGET): $(filter-out $(BUILD)test.o,$(OBJECTS))

@@ -107,10 +107,10 @@ class Room
 	*/
 	friend ostream& operator << (ostream& os, const Room& obj) 
 	{
+		int x = obj._ptr->GetCoordinates().x; 
+		int y = obj._ptr->GetCoordinates().y; 
 		os << "Room Size: " << obj._width << "x" << obj._length << " m" << endl; 
-		os << "Vehicle position: (" << obj._ptr->GetCoordinates().x; 
-		os << ","; 
-		os << obj._ptr->GetCoordinates().y << ")" << endl;
+		os << "Vehicle position: (" << x << "," << y << ")" << endl;
 		return os; 
 	}
 	public: 
@@ -179,7 +179,9 @@ void Room<V, Args...>::ChangeHeading(string& str)
 		else if (elem == dir[2])
 			Left();
 		else if (elem == dir[3])
-			Right(); 
+			Right();
+		else
+			throw invalid_argument("Invalid direction given"); 
 	}
 }
 
@@ -240,7 +242,7 @@ Room<V,Args...>::Room(int width, int length, Args&&... args) : _width{ width }, 
 
 	if (width <= 0 || length <= 0)
 		throw invalid_argument("Width and length shall only be positive");
-	else if (( x > _width - diameter)  || (y > _width - diameter))
+	else if (( x > _width - diameter)  || (y > length - diameter))
 		throw out_of_range("Vehicle initial position outside of room"); 
 
 }
@@ -259,7 +261,7 @@ Room<V, Args...>::Room(int width, int length, V* ptr) : _width{ width }, _length
 
 	if (width <= 0 || length <= 0)
 		throw invalid_argument("Width and length shall only be positive");
-	else if ((x > _width - diameter) || (y > _width - diameter))
+	else if ((x > _width - diameter) || (y > length - diameter))
 		throw out_of_range("Vehicle initial position outside of room");
 }
 
@@ -278,7 +280,7 @@ Room<V, Args...>::Room(int width, int length, unique_ptr<V>&& ptr) : _width{ wid
 
 	if (width <= 0 || length <= 0)
 		throw invalid_argument("Width and length shall only be positive");
-	else if ((x > _width - diameter) || (y > _width - diameter))
+	else if ((x > _width - diameter) || (y > length - diameter))
 		throw out_of_range("Vehicle initial position outside of room");
 }
 
@@ -300,6 +302,6 @@ Room<V, Args...>::Room(int width, int length, V&& obj) : _width{ width }, _lengt
 
 	if (width <= 0 || length <= 0)
 		throw invalid_argument("Width and length shall only be positive");
-	else if ((x > _width - diameter) || (y > _width - diameter))
+	else if ((x > _width - diameter) || (y > length - diameter))
 		throw out_of_range("Vehicle initial position outside of room");
 }

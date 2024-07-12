@@ -5,7 +5,7 @@ OS: Linux/Ubuntu
 Build System: Make 
 
 
-*************************************Description*************************************************
+[DESCRIPTION]
 This projects simulates a vehicle in a 2-dimensional space. 
 Each vehicle (e.g., car) inherits from abstract base class which requires 
 virtual override of a set of elementary methods. This includes Left(), Right() 
@@ -41,10 +41,7 @@ base class Vehicle. As long as the pure virtual functions has been overloaded.
 This makes the class easy to extend for a wide range of vehicles, without the 
 need to modify the Room or Vehicle class itself. 
 
-**********************************************************************************************
-
-
-**************************************Build***************************************************
+[BUILD]
 The program is built using make. The following commands are supported: 
 
 make install   : Install the project under the same directory as the install folder is located. 
@@ -67,8 +64,11 @@ CXXFLAGS, CPPFLAGS, directories and more.
 
 **********************************************************************************************
 
-- Race Conditions: None. Single-threaded. 
-- Exception handling. The class Room constructor and member methods may throw 
+[RACE CONDITIONS] 
+None. Single-threaded application. 
+
+[EXCEPTION HANDLING]
+The class Room constructor and member methods may throw 
   and shall be put within try black to avoid call to std::terminate. 
 
 
