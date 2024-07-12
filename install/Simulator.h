@@ -234,8 +234,15 @@ void Room<V, Args...>::Forward()
 template<typename V, typename... Args> 
 Room<V,Args...>::Room(int width, int length, Args&&... args) : _width{ width }, _length{ length }, _ptr{ make_unique<V>(args...) }
 {
+	int x = _ptr->GetCoordinates().x; 
+	int y = _ptr->GetCoordinates().y; 
+	int diameter = _ptr->GetDiameter();
+
 	if (width <= 0 || length <= 0)
 		throw invalid_argument("Width and length shall only be positive");
+	else if (( x > _width - diameter)  || (y > _width - diameter))
+		throw out_of_range("Vehicle initial position outside of room"); 
+
 }
 
 /*@brief Constructor using vehicle pointer (V*).
@@ -246,9 +253,14 @@ Room<V,Args...>::Room(int width, int length, Args&&... args) : _width{ width }, 
 template<typename V, typename... Args>
 Room<V, Args...>::Room(int width, int length, V* ptr) : _width{ width }, _length{ length }, _ptr{ ptr }
 {
+	int x = _ptr->GetCoordinates().x;
+	int y = _ptr->GetCoordinates().y;
+	int diameter = _ptr->GetDiameter();
+
 	if (width <= 0 || length <= 0)
 		throw invalid_argument("Width and length shall only be positive");
-
+	else if ((x > _width - diameter) || (y > _width - diameter))
+		throw out_of_range("Vehicle initial position outside of room");
 }
 
 /*@brief Constructor moving unique_ptr rvalue (holding pre-existing) into
@@ -260,8 +272,14 @@ Room<V, Args...>::Room(int width, int length, V* ptr) : _width{ width }, _length
 template<typename V, typename... Args>
 Room<V, Args...>::Room(int width, int length, unique_ptr<V>&& ptr) : _width{ width }, _length{ length }, _ptr{ move(ptr) }
 {
+	int x = _ptr->GetCoordinates().x;
+	int y = _ptr->GetCoordinates().y;
+	int diameter = _ptr->GetDiameter();
+
 	if (width <= 0 || length <= 0)
 		throw invalid_argument("Width and length shall only be positive");
+	else if ((x > _width - diameter) || (y > _width - diameter))
+		throw out_of_range("Vehicle initial position outside of room");
 }
 
 /*@brief Constructor that constructs rvalue vehicle object in place 
@@ -272,8 +290,16 @@ Room<V, Args...>::Room(int width, int length, unique_ptr<V>&& ptr) : _width{ wid
 template<typename V, typename... Args>
 Room<V, Args...>::Room(int width, int length, V&& obj) : _width{ width }, _length{ length }
 {
+	int x = obj.GetCoordinates().x; 
+	int y = obj.GetCoordinates().y; 
+	int diameter = obj.GetDiameter(); 
+
 	auto ptr = operator new(sizeof(V));
 	new (ptr) V(move(obj));
 	_ptr = move(unique_ptr<V>(static_cast<V*>(ptr)));
 
+	if (width <= 0 || length <= 0)
+		throw invalid_argument("Width and length shall only be positive");
+	else if ((x > _width - diameter) || (y > _width - diameter))
+		throw out_of_range("Vehicle initial position outside of room");
 }
