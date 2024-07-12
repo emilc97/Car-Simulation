@@ -33,13 +33,13 @@ void VehiclePosition(int& x, int& y, Direction& dir)
 	istringstream isstream{ str }; 
 	isstream >> x >> y >> tmp; //string stream for string to numeric conversion
 	//set vehicle direction
-	if (tmp[0] == 'S')
+	if (tmp == string{ 'S' })
 		dir = South;
-	else if (tmp[0] == 'W')
+	else if (tmp == string{ 'W' })
 		dir = West;
-	else if (tmp[0] == 'N')
+	else if (tmp == string{ 'N' })
 		dir = North;
-	else if (tmp[0] == 'E')
+	else if (tmp == string{ 'E' })
 		dir = East;
 	else
 		throw invalid_argument("Invalid direction requested for the vehicle. Valid are (S, W, N, E)"); 
