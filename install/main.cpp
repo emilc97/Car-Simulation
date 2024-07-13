@@ -74,6 +74,7 @@ int main()
 		cout << "Enter a route (F-Forward, B-Back, R-Right, L-Left): ";
 		cin >> str;
 		r.ChangeHeading(str); 
+		cout << "Simulation Successful" << endl; 
 	}
 	catch (const exception& e)
 	{
