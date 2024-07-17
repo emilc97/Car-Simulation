@@ -2,20 +2,20 @@
 
 void Car::Forward()
 {
-	switch (traject)
+	switch (_traject)
 	{
 	case South:
-		coordinates.y--;
+		_coordinates.y--;
 		break;
 
 	case West:
-		coordinates.x--;
+		_coordinates.x--;
 		break;
 	case North:
-		coordinates.y++;
+		_coordinates.y++;
 		break;
 	case East:
-		coordinates.x++;
+		_coordinates.x++;
 		break;
 	default:
 		break;
@@ -25,20 +25,20 @@ void Car::Forward()
 
 void Car::Back()
 {
-	switch (traject)
+	switch (_traject)
 	{
 	case South:
-		coordinates.y++;
+		_coordinates.y++;
 		break;
 
 	case West:
-		coordinates.x++;
+		_coordinates.x++;
 		break;
 	case North:
-		coordinates.y--;
+		_coordinates.y--;
 		break;
 	case East:
-		coordinates.x--;
+		_coordinates.x--;
 		break;
 	default:
 		break;
