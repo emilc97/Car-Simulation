@@ -55,6 +55,10 @@ $(BUILD)%.o: $(SOURCE)%.cpp $(HEADERS)%.h | $(dirs)
 $(BUILD)%.o: $(SOURCE)%.cpp | $(dirs)       
 	$(CC) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@ 
 
+#explicit rule for main
+$(BUILD)main.o: main.cpp Simulator.h Car.h | $(dirs)       
+	$(CC) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@ 
+
 #out-of-source build 
 dirs: 
 	@mkdir -p $(SOURCE)

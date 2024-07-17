@@ -42,8 +42,8 @@ template<typename T>
 class Vehicle
 {
 	protected: 
-	T diameter; 
-	Position<T> coordinates; 
+	T _diameter; 
+	Position<T> _coordinates; 
 	public: 
 	virtual void Left() = 0; 
 	virtual void Right() = 0; 
@@ -56,12 +56,12 @@ class Vehicle
 	*/
 	void PrintCoordinates()
 	{
-		cout << "(" << coordinates.x << "," << coordinates.y << ")" << endl; 
+		cout << "(" << _coordinates.x << "," << _coordinates.y << ")" << endl; 
 	}
 	
 	T GetDiameter() const noexcept
 	{
-		return diameter; 
+		return _diameter; 
 	}
 	Vehicle(T x = T(), T y = T(), T diameter = T());
 	~Vehicle() = default; 
@@ -75,12 +75,12 @@ class Vehicle
 template<typename T>
 void Vehicle<T>::SetCoordinates(T x, T y) noexcept
 {
-	coordinates.x = x;
-	coordinates.y = y;
+	_coordinates.x = x;
+	_coordinates.y = y;
 }
 
 template<typename T>
-Vehicle<T>::Vehicle(T x, T y, T diameter) : diameter{ diameter }, coordinates { x, y }
+Vehicle<T>::Vehicle(T x, T y, T diameter) : _diameter{ diameter }, _coordinates { x, y }
 {
 	if (x < 0 || y < 0)
 		throw out_of_range("Coordinates must be non-negative");
@@ -89,7 +89,7 @@ Vehicle<T>::Vehicle(T x, T y, T diameter) : diameter{ diameter }, coordinates { 
 template<typename T>
 Position<T>& Vehicle<T>::GetCoordinates() noexcept
 {
-	return coordinates;
+	return _coordinates;
 }
 
 
@@ -242,7 +242,7 @@ Room<V,Args...>::Room(int width, int length, Args&&... args) : _width{ width }, 
 
 	if (width <= 0 || length <= 0)
 		throw invalid_argument("Width and length shall only be positive");
-	else if (( x > _width - diameter)  || (y > length - diameter))
+	else if (( x > width - diameter)  || (y > length - diameter))
 		throw out_of_range("Vehicle initial position outside of room"); 
 
 }
@@ -261,7 +261,7 @@ Room<V, Args...>::Room(int width, int length, V* ptr) : _width{ width }, _length
 
 	if (width <= 0 || length <= 0)
 		throw invalid_argument("Width and length shall only be positive");
-	else if ((x > _width - diameter) || (y > length - diameter))
+	else if ((x > width - diameter) || (y > length - diameter))
 		throw out_of_range("Vehicle initial position outside of room");
 }
 
@@ -280,7 +280,7 @@ Room<V, Args...>::Room(int width, int length, unique_ptr<V>&& ptr) : _width{ wid
 
 	if (width <= 0 || length <= 0)
 		throw invalid_argument("Width and length shall only be positive");
-	else if ((x > _width - diameter) || (y > length - diameter))
+	else if ((x > width - diameter) || (y > length - diameter))
 		throw out_of_range("Vehicle initial position outside of room");
 }
 
@@ -302,6 +302,6 @@ Room<V, Args...>::Room(int width, int length, V&& obj) : _width{ width }, _lengt
 
 	if (width <= 0 || length <= 0)
 		throw invalid_argument("Width and length shall only be positive");
-	else if ((x > _width - diameter) || (y > length - diameter))
+	else if ((x > width - diameter) || (y > length - diameter))
 		throw out_of_range("Vehicle initial position outside of room");
 }
