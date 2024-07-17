@@ -27,7 +27,7 @@ public:
 
 class Car : public Vehicle<int>
 {
-	Trajectory traject;
+	Trajectory _traject;
 public:
 	/*@brief Overload of stream extraction operator
 	* @param ostream: Output stream object
@@ -39,14 +39,14 @@ public:
 		os << "Car Position (" << obj.GetCoordinates().x << "," << obj.GetCoordinates().y << endl;
 		return os;
 	}
-	Car(int x, int y, Direction dir, int diameter = 1) : Vehicle{ x,y, diameter }, traject{ dir } {};
+	Car(int x, int y, Direction dir, int diameter = 1) : Vehicle{ x,y, diameter }, _traject{ dir } {};
 	virtual void Left() override
 	{
-		traject--;
+		_traject--;
 	}
 	virtual void Right() override
 	{
-		traject++;
+		_traject++;
 	}
 	virtual void Forward() override;
 	virtual void Back() override;
