@@ -2,7 +2,7 @@
 
 void Car::Forward()
 {
-	switch (_traject)
+	switch (*_traject)
 	{
 	case South:
 		_coordinates.y--;
@@ -25,7 +25,7 @@ void Car::Forward()
 
 void Car::Back()
 {
-	switch (_traject)
+	switch (*_traject)
 	{
 	case South:
 		_coordinates.y++;

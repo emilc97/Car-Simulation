@@ -4,9 +4,8 @@
 using namespace std; 
 
 
-/*@class Trajectory
-* @brief Wrapper class for the direction enum for wrap-around
-*
+/*@class CarTrajectory
+* @brief Derived from Abstract Trajectory Class
 * The trajectory wrapper class is designated for post-increment
 * and pre-increment of the vehicle direction (S, W, N, E) and
 * provides wrap-around behavior.
@@ -25,28 +24,30 @@ public:
 	virtual string HeadingStr()  noexcept override; 
 };
 
+
 class Car : public Vehicle<int>
 {
-	CarTrajectory _traject;
 public:
 	/*@brief Overload of stream extraction operator
 	* @param ostream: Output stream object
 	* @param obj: Car object
 	* @retval os: lvalue reference to ensure modification persist in current stream object
 	*/
+	using Vehicle<int>::_traject; 
+
 	friend ostream& operator << (ostream& os, Car& obj)
 	{
 		os << "Car Position (" << obj.GetCoordinates().x << "," << obj.GetCoordinates().y << endl;
 		return os;
 	}
-	Car(int x, int y, Direction dir, int diameter = 1) : Vehicle{ x,y, diameter }, _traject{ dir } {};
+	Car(int x, int y, Direction dir, int diameter = 1) : Vehicle{ x,y, diameter, new CarTrajectory{dir} }{};
 	virtual void Left() override
 	{
-		_traject--;
+		(*_traject)--;
 	}
 	virtual void Right() override
 	{
-		_traject++;
+		(* _traject)++;
 	}
 	virtual void Forward() override;
 	virtual void Back() override;

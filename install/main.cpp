@@ -75,6 +75,8 @@ int main()
 		cin >> str;
 		r.ChangeHeading(str); 
 		cout << "Simulation Successful" << endl; 
+		cout << "Coordinates: " << "(" << r.GetXPosition() << "," << r.GetYPosition() << ")" << endl; 
+		cout << "Heading: " << r.GetHeading() << endl; 
 	}
 	catch (const exception& e)
 	{

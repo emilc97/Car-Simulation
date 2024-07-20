@@ -18,12 +18,12 @@ enum Direction
 	East
 };
 
-/*@class Trajectory
+/*@Abstract class Trajectory
 * @brief Wrapper class for the direction enum for wrap-around
-*
 * The trajectory wrapper class is designated for post-increment
 * and pre-increment of the vehicle direction (S, W, N, E) and
-* provides wrap-around behavior.
+* provides wrap-around behavior. Each vehicle shall have a 
+* trajectory object overriding the interface (pure v. functions)
 */
 class Trajectory
 {
@@ -39,7 +39,7 @@ public:
 		return _dir;
 	}
 	virtual Direction& GetDirection() noexcept = 0; 
-	virtual string HeadingStr()  noexcept = 0; 
+	virtual string HeadingStr() noexcept = 0; 
 
 };
 
@@ -69,6 +69,7 @@ class Vehicle
 	protected: 
 	T _diameter; 
 	Position<T> _coordinates; 
+	unique_ptr<Trajectory> _traject; 
 	public: 
 	virtual void Left() = 0; 
 	virtual void Right() = 0; 
@@ -88,8 +89,15 @@ class Vehicle
 	{
 		return _diameter; 
 	}
-	Vehicle(T x = T(), T y = T(), T diameter = T());
+	Vehicle(T x = T(), T y = T(), T diameter = T(), Trajectory* ptr = nullptr);
 	~Vehicle() = default; 
+	//since unique_ptr it is non-copyable but movable 
+	Vehicle(Vehicle&& obj)
+	{
+		this->_diameter = obj._diameter; 
+		this->_coordinates = obj._coordinates; 
+		this->_traject = move(obj._traject); 
+	}
 };
 
 /*@brief Vehicle constructor
@@ -105,7 +113,7 @@ void Vehicle<T>::SetCoordinates(T x, T y) noexcept
 }
 
 template<typename T>
-Vehicle<T>::Vehicle(T x, T y, T diameter) : _diameter{ diameter }, _coordinates { x, y }
+Vehicle<T>::Vehicle(T x, T y, T diameter, Trajectory* ptr) : _diameter{ diameter }, _coordinates { x, y }, _traject{ptr}
 {
 	if (x < 0 || y < 0)
 		throw out_of_range("Coordinates must be non-negative");
@@ -182,6 +190,11 @@ class Room
 	int GetYPosition() const
 	{
 		return _ptr->GetCoordinates().y;
+	}
+
+	string GetHeading() const noexcept
+	{
+		return 	_ptr->_traject->HeadingStr();
 	}
 	~Room() = default; 
 
