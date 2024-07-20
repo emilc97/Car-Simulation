@@ -178,24 +178,28 @@ class Room
 	}
 
 	/*@brief Get x coordinate 
-	* @retval : None 
+	* @retval : x position. 
 	*/
 	int GetXPosition() const
 	{
 		return _ptr->GetCoordinates().x; 
 	}
 	/*@brief Get y coordinate
-	* @retval : None
+	* @retval : y position 
 	*/
 	int GetYPosition() const
 	{
 		return _ptr->GetCoordinates().y;
 	}
 
+	/*@breif Get Current Heading of Vehicle 
+	* @retval: "South", "West", "North" or "East" depending on heading. 
+	*/
 	string GetHeading() const noexcept
 	{
 		return 	_ptr->_traject->HeadingStr();
 	}
+	/*Default destructor*/
 	~Room() = default; 
 
 };
