@@ -13,26 +13,31 @@ using namespace std;
 enum Direction
 {
 	South = 0,
+	SouthWest, 
 	West,
+	NorthWest, 
 	North,
-	East
+	NorthEast, 
+	East, 
+	SouthEast 
+
 };
 
-/*@Abstract class Trajectory
+/*@Abstract class Heading
 * @brief Wrapper class for the direction enum for wrap-around
 * The trajectory wrapper class is designated for post-increment
-* and pre-increment of the vehicle direction (S, W, N, E) and
-* provides wrap-around behavior. Each vehicle shall have a 
-* trajectory object overriding the interface (pure v. functions)
+* and pre-increment of the vehicle direction (S, W, N, E)
+* Each vehicle shall have a trajectory object overriding the 
+* interface (pure v. functions)
 */
-class Trajectory
+class Heading
 {
 protected: 
 	Direction _dir;
 public:
-	Trajectory(Direction dir = North) : _dir{ dir } {};
-	virtual Trajectory& operator++(int) noexcept = 0;
-	virtual Trajectory& operator--(int) noexcept = 0;
+	Heading(Direction dir = North) : _dir{ dir } {};
+	virtual Heading& operator++(int) noexcept = 0;
+	virtual Heading& operator--(int) noexcept = 0;
 	//conversion operator to be treated as an enum 
 	operator Direction()
 	{
@@ -69,7 +74,7 @@ class Vehicle
 	protected: 
 	T _diameter; 
 	Position<T> _coordinates; 
-	unique_ptr<Trajectory> _traject; 
+	unique_ptr<Heading> _heading; 
 	public: 
 	virtual void Left() = 0; 
 	virtual void Right() = 0; 
@@ -89,15 +94,16 @@ class Vehicle
 	{
 		return _diameter; 
 	}
-	Vehicle(T x = T(), T y = T(), T diameter = T(), Trajectory* ptr = nullptr);
+	Vehicle(T x = T(), T y = T(), T diameter = T(), Heading* ptr = nullptr);
 	~Vehicle() = default; 
 	//since unique_ptr it is non-copyable but movable 
 	Vehicle(Vehicle&& obj)
 	{
 		this->_diameter = obj._diameter; 
 		this->_coordinates = obj._coordinates; 
-		this->_traject = move(obj._traject); 
+		this->_heading = move(obj._heading); 
 	}
+
 };
 
 /*@brief Vehicle constructor
@@ -113,7 +119,7 @@ void Vehicle<T>::SetCoordinates(T x, T y) noexcept
 }
 
 template<typename T>
-Vehicle<T>::Vehicle(T x, T y, T diameter, Trajectory* ptr) : _diameter{ diameter }, _coordinates { x, y }, _traject{ptr}
+Vehicle<T>::Vehicle(T x, T y, T diameter, Heading* ptr) : _diameter{ diameter }, _coordinates { x, y }, _heading{ptr}
 {
 	if (x < 0 || y < 0)
 		throw out_of_range("Coordinates must be non-negative");
@@ -197,7 +203,7 @@ class Room
 	*/
 	string GetHeading() const noexcept
 	{
-		return 	_ptr->_traject->HeadingStr();
+		return 	_ptr->_heading->HeadingStr();
 	}
 	/*Default destructor*/
 	~Room() = default; 

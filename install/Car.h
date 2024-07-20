@@ -4,19 +4,19 @@
 using namespace std; 
 
 
-/*@class CarTrajectory
-* @brief Derived from Abstract Trajectory Class
-* The trajectory wrapper class is designated for post-increment
+/*@class CarHeading
+* @brief Derived from Abstract Heading Class
+* The Heading wrapper class is designated for post-increment
 * and pre-increment of the vehicle direction (S, W, N, E) and
 * provides wrap-around behavior.
 */
-class CarTrajectory: public Trajectory
+class CarHeading: public Heading
 {
 
 public:
-	CarTrajectory(Direction dir = North) : Trajectory{ dir } {};
-	virtual CarTrajectory& operator++(int) noexcept override; 
-	virtual CarTrajectory& operator--(int) noexcept override; 
+	CarHeading(Direction dir = North) : Heading{ dir } {};
+	virtual CarHeading& operator++(int) noexcept override; 
+	virtual CarHeading& operator--(int) noexcept override; 
 	virtual Direction& GetDirection() noexcept override 
 	{
 		return _dir; 
@@ -33,21 +33,21 @@ public:
 	* @param obj: Car object
 	* @retval os: lvalue reference to ensure modification persist in current stream object
 	*/
-	using Vehicle<int>::_traject; 
+	using Vehicle<int>::_heading; 
 
 	friend ostream& operator << (ostream& os, Car& obj)
 	{
 		os << "Car Position (" << obj.GetCoordinates().x << "," << obj.GetCoordinates().y << endl;
 		return os;
 	}
-	Car(int x, int y, Direction dir, int diameter = 1) : Vehicle{ x,y, diameter, new CarTrajectory{dir} }{};
+	Car(int x, int y, Direction dir, int diameter = 1) : Vehicle{ x,y, diameter, new CarHeading{dir} }{};
 	virtual void Left() override
 	{
-		(*_traject)--;
+		(*_heading)--;
 	}
 	virtual void Right() override
 	{
-		(* _traject)++;
+		(* _heading)++;
 	}
 	virtual void Forward() override;
 	virtual void Back() override;

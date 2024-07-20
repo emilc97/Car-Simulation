@@ -2,7 +2,7 @@
 
 void Car::Forward()
 {
-	switch (*_traject)
+	switch (*_heading)
 	{
 	case South:
 		_coordinates.y--;
@@ -25,7 +25,7 @@ void Car::Forward()
 
 void Car::Back()
 {
-	switch (*_traject)
+	switch (*_heading)
 	{
 	case South:
 		_coordinates.y++;
@@ -45,7 +45,7 @@ void Car::Back()
 	}
 }
 
-CarTrajectory& CarTrajectory::operator++(int) noexcept
+CarHeading& CarHeading::operator++(int) noexcept
 {
 	Direction& dir = GetDirection(); 
 	if (dir == South)
@@ -60,7 +60,7 @@ CarTrajectory& CarTrajectory::operator++(int) noexcept
 	return *this;
 }
 
-CarTrajectory& CarTrajectory::operator--(int) noexcept
+CarHeading& CarHeading::operator--(int) noexcept
 {
 	Direction& dir = GetDirection();
 	if (dir == South)
@@ -75,7 +75,7 @@ CarTrajectory& CarTrajectory::operator--(int) noexcept
 	return *this;
 }
 
-string CarTrajectory::HeadingStr() noexcept 
+string CarHeading::HeadingStr() noexcept 
 {
 	string tmp; 
 	Direction dir = GetDirection(); 
@@ -93,6 +93,8 @@ string CarTrajectory::HeadingStr() noexcept
 	case East:
 		tmp = "West";
 		break;
+	default: 
+			break; 
 
 	}
 	return tmp; 
