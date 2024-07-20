@@ -45,30 +45,55 @@ void Car::Back()
 	}
 }
 
-Trajectory& Trajectory::operator++(int) noexcept
+CarTrajectory& CarTrajectory::operator++(int) noexcept
 {
-	if (_dir == South)
-		_dir = West;
-	else if (_dir == West)
-		_dir = North;
-	else if (_dir == North)
-		_dir = East;
-	else if (_dir == East)
-		_dir = South;
+	Direction& dir = GetDirection(); 
+	if (dir == South)
+		dir = West;
+	else if (dir == West)
+		dir = North;
+	else if (dir == North)
+		dir = East;
+	else if (dir == East)
+		dir = South;
 
 	return *this;
 }
 
-Trajectory& Trajectory::operator--(int) noexcept
+CarTrajectory& CarTrajectory::operator--(int) noexcept
 {
-	if (_dir == South)
-		_dir = East;
-	else if (_dir == West)
-		_dir = South;
-	else if (_dir == North)
-		_dir = West;
-	else if (_dir == East)
-		_dir = North;
+	Direction& dir = GetDirection();
+	if (dir == South)
+		dir = East;
+	else if (dir == West)
+		dir = South;
+	else if (dir == North)
+		dir = West;
+	else if (dir == East)
+		dir = North;
 
 	return *this;
+}
+
+string CarTrajectory::HeadingStr() noexcept 
+{
+	string tmp; 
+	Direction dir = GetDirection(); 
+	switch (dir)
+	{
+	case South: 
+		tmp = "South"; 
+		break; 
+	case West:
+		tmp = "West";
+		break;
+	case North:
+		tmp = "South";
+		break;
+	case East:
+		tmp = "West";
+		break;
+
+	}
+	return tmp; 
 }

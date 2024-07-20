@@ -3,6 +3,7 @@
 #include "Simulator.h"
 using namespace std; 
 
+
 /*@class Trajectory
 * @brief Wrapper class for the direction enum for wrap-around
 *
@@ -10,24 +11,23 @@ using namespace std;
 * and pre-increment of the vehicle direction (S, W, N, E) and
 * provides wrap-around behavior.
 */
-class Trajectory
+class CarTrajectory: public Trajectory
 {
-	Direction _dir;
-public:
-	Trajectory(Direction dir = North) : _dir{ dir } {};
-	Trajectory& operator++(int) noexcept;
-	Trajectory& operator--(int) noexcept;
-	//conversion operator to be treated as an enum 
-	operator Direction()
-	{
-		return _dir;
-	}
 
+public:
+	CarTrajectory(Direction dir = North) : Trajectory{ dir } {};
+	virtual CarTrajectory& operator++(int) noexcept override; 
+	virtual CarTrajectory& operator--(int) noexcept override; 
+	virtual Direction& GetDirection() noexcept override 
+	{
+		return _dir; 
+	}
+	virtual string HeadingStr()  noexcept override; 
 };
 
 class Car : public Vehicle<int>
 {
-	Trajectory _traject;
+	CarTrajectory _traject;
 public:
 	/*@brief Overload of stream extraction operator
 	* @param ostream: Output stream object

@@ -18,6 +18,31 @@ enum Direction
 	East
 };
 
+/*@class Trajectory
+* @brief Wrapper class for the direction enum for wrap-around
+*
+* The trajectory wrapper class is designated for post-increment
+* and pre-increment of the vehicle direction (S, W, N, E) and
+* provides wrap-around behavior.
+*/
+class Trajectory
+{
+protected: 
+	Direction _dir;
+public:
+	Trajectory(Direction dir = North) : _dir{ dir } {};
+	virtual Trajectory& operator++(int) noexcept = 0;
+	virtual Trajectory& operator--(int) noexcept = 0;
+	//conversion operator to be treated as an enum 
+	operator Direction()
+	{
+		return _dir;
+	}
+	virtual Direction& GetDirection() noexcept = 0; 
+	virtual string HeadingStr()  noexcept = 0; 
+
+};
+
 /*@brief Position coordinates with template parameter T*/
 template<typename T> 
 struct Position
