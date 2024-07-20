@@ -9,8 +9,8 @@
 using namespace std; 
 
 
-/*@brief Enum for directions */
-enum Direction
+/*@brief Enum for Cardinal_Pointss */
+enum Cardinal_Points
 {
 	South = 0,
 	SouthWest, 
@@ -24,26 +24,26 @@ enum Direction
 };
 
 /*@Abstract class Heading
-* @brief Wrapper class for the direction enum for wrap-around
+* @brief Wrapper class for the Cardinal_Points enum for wrap-around
 * The trajectory wrapper class is designated for post-increment
-* and pre-increment of the vehicle direction (S, W, N, E)
+* and pre-increment of the vehicle Cardinal_Points (S, W, N, E)
 * Each vehicle shall have a trajectory object overriding the 
 * interface (pure v. functions)
 */
 class Heading
 {
 protected: 
-	Direction _dir;
+	Cardinal_Points _cpts;
 public:
-	Heading(Direction dir = North) : _dir{ dir } {};
+	Heading(Cardinal_Points dir = North) : _cpts{ dir } {};
 	virtual Heading& operator++(int) noexcept = 0;
 	virtual Heading& operator--(int) noexcept = 0;
 	//conversion operator to be treated as an enum 
-	operator Direction()
+	operator Cardinal_Points()
 	{
-		return _dir;
+		return _cpts;
 	}
-	virtual Direction& GetDirection() noexcept = 0; 
+	virtual Cardinal_Points& Get_Cardinal_Points() noexcept = 0; 
 	virtual string HeadingStr() noexcept = 0; 
 
 };
@@ -210,7 +210,7 @@ class Room
 
 };
 
-/*@brief  Change current direction (heading) using ASCII character (S, W, N, E)
+/*@brief  Change current Cardinal_Points (heading) using ASCII character (S, W, N, E)
 * @param  str: String holding the ASCII character 
 * @retval None 
 */
@@ -229,7 +229,7 @@ void Room<V, Args...>::ChangeHeading(string& str)
 		else if (elem == dir[3])
 			Right();
 		else
-			throw invalid_argument("Invalid direction given"); 
+			throw invalid_argument("Invalid Cardinal_Points given"); 
 	}
 }
 

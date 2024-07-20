@@ -7,19 +7,19 @@ using namespace std;
 /*@class CarHeading
 * @brief Derived from Abstract Heading Class
 * The Heading wrapper class is designated for post-increment
-* and pre-increment of the vehicle direction (S, W, N, E) and
+* and pre-increment of the vehicle Cardinal_Points (S, W, N, E) and
 * provides wrap-around behavior.
 */
 class CarHeading: public Heading
 {
 
 public:
-	CarHeading(Direction dir = North) : Heading{ dir } {};
+	CarHeading(Cardinal_Points dir = North) : Heading{ dir } {};
 	virtual CarHeading& operator++(int) noexcept override; 
 	virtual CarHeading& operator--(int) noexcept override; 
-	virtual Direction& GetDirection() noexcept override 
+	virtual Cardinal_Points& Get_Cardinal_Points() noexcept override 
 	{
-		return _dir; 
+		return _cpts; 
 	}
 	virtual string HeadingStr()  noexcept override; 
 };
@@ -40,7 +40,7 @@ public:
 		os << "Car Position (" << obj.GetCoordinates().x << "," << obj.GetCoordinates().y << endl;
 		return os;
 	}
-	Car(int x, int y, Direction dir, int diameter = 1) : Vehicle{ x,y, diameter, new CarHeading{dir} }{};
+	Car(int x, int y, Cardinal_Points dir, int diameter = 1) : Vehicle{ x,y, diameter, new CarHeading{dir} }{};
 	virtual void Left() override
 	{
 		(*_heading)--;

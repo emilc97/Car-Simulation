@@ -47,7 +47,7 @@ void Car::Back()
 
 CarHeading& CarHeading::operator++(int) noexcept
 {
-	Direction& dir = GetDirection(); 
+	Cardinal_Points& dir = Get_Cardinal_Points(); 
 	if (dir == South)
 		dir = West;
 	else if (dir == West)
@@ -62,7 +62,7 @@ CarHeading& CarHeading::operator++(int) noexcept
 
 CarHeading& CarHeading::operator--(int) noexcept
 {
-	Direction& dir = GetDirection();
+	Cardinal_Points& dir = Get_Cardinal_Points();
 	if (dir == South)
 		dir = East;
 	else if (dir == West)
@@ -78,7 +78,7 @@ CarHeading& CarHeading::operator--(int) noexcept
 string CarHeading::HeadingStr() noexcept 
 {
 	string tmp; 
-	Direction dir = GetDirection(); 
+	Cardinal_Points dir = Get_Cardinal_Points(); 
 	switch (dir)
 	{
 	case South: 

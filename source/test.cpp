@@ -7,7 +7,7 @@ using namespace std;
 void Constructors()
 {
 	cout << "********************Constructors - START******************************" << endl;
-	Room<Car, int, int, Direction> r(20, 16, 4,5, West);
+	Room<Car, int, int, Cardinal_Points> r(20, 16, 4,5, West);
 	cout << "Executing some driving with parameter pack constructor" << endl;
 	r.Forward();
 	r.Right();

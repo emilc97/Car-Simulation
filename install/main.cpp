@@ -27,10 +27,10 @@ void RoomSize(int& width, int& length)
 /* @brief Set vehicle position (x,y) and initial heading (S, W, N, E) 
 *  @param x  : x coordinate 
 *  @param y  : y coordinate 
-*  @param dir: Initial Heading (direction) 
+*  @param dir: Initial Heading (Cardinal_Points) 
 *  @return   : None 
 */
-void VehiclePosition(int& x, int& y, Direction& dir)
+void VehiclePosition(int& x, int& y, Cardinal_Points& dir)
 {
 	string str, tmp; 
 	cout << "Enter the initial coordinates (position) of the car and heading (S, W, N, E):";
@@ -42,7 +42,7 @@ void VehiclePosition(int& x, int& y, Direction& dir)
 		throw invalid_argument("Y coordinate must be numeric");
 	isstream >> tmp; //string stream for string to numeric conversion
 
-	//set vehicle direction
+	//set vehicle Cardinal_Points
 	if (tmp == string{ 'S' })
 		dir = South;
 	else if (tmp == string{ 'W' })
@@ -52,7 +52,7 @@ void VehiclePosition(int& x, int& y, Direction& dir)
 	else if (tmp == string{ 'E' })
 		dir = East;
 	else
-		throw invalid_argument("Invalid direction requested for the vehicle. Valid are (S, W, N, E)"); 
+		throw invalid_argument("Invalid Cardinal_Points requested for the vehicle. Valid are (S, W, N, E)"); 
 }
 
 
@@ -66,7 +66,7 @@ int main()
 		int x_initial;
 		int y_initial;
 
-		Direction dir = North; 
+		Cardinal_Points dir = North; 
 		RoomSize(width, length); 
 		VehiclePosition(x_initial, y_initial, dir); 
 		//construction from rvalue reference (placement new) 
