@@ -4,22 +4,46 @@ Project: Radio Car Simulation
 OS: Linux/Ubuntu
 Build System: Make 
 
-[DESCRIPTION]
+[BRIEF]
 This projects simulates a vehicle in a 2-dimensional space. 
-Each vehicle (e.g., car) inherits from abstract base class which requires 
-virtual override of a set of elementary methods. This includes Left(), Right() 
-Forward() and Back(). The 2-dimensional space is represented by the class 'Room' 
+The 2-dimensional space is represented by the class 'Room' 
 which monitors and manages control of the vehicle. If the vehicle hits any of the 
 walls an exception will be thrown, stack unwinding occurs, and the user will 
-prompted that the program has terminated. 
+prompted that the program has terminated. Otherwise, simulation will succeed 
+and a message regarding end position and heading will be printed to the terminal. 
 
-The program is developed using templates and parameter packing to support 
-simulation of a wide range of vehicles that inherits from the abstract base 
-class. The vehicle is dynamically allocated to preserve stack space, and ensure 
-compatibility with future extensions of the vehicle class. 
+[Features]
+- Templates are used to support a wide range of coordinate types and 
+  parameter packing for object construction. 
+- Specialization of vehicles through inheritance through a common 
+  abstract base class and trajectory system. 
+- Smart pointer for memory leakage protection and prevention 
+  of stack overflow. Since vehicle derived classes 
+  might differ in terms of memory footprint. 
+- Exception handling for invalid input and simulation failure. 
+- The templated classes are header-only to avoid linking 
+  failure during compilation. 
+- Cross platform: build system make. 
+
+[DESCRIPTION] 
+The application is implemented using 2 abstract base classes: 
+- Vehicle 
+- Trajectory 
+Each vehicle implements as set of basic methods, such as left, 
+right, forward and back. But also includes a 'trajectory system' 
+which specializes the vehicle for movement in terms of post increment/
+decrement operators. E.g., operator-- could indicate rotation in anti 
+clock-wise direction (north->west->south->east). 
+
+A vehicle requires concrete trajectory class (publicly inherited). 
+A room requires an vehicle for construction, either via raw-pointer, 
+smart pointer, move semantics, forwarding or rvalue. 
 
 
-The Room class has a set of overloaded constructors that supports: 
+[Overloaded Constructors]
+The Room class provides a set of overloaded constructors to support 
+parameter packing, c-style pointers, smart pointers and move semantics. 
+
 - Construction of the vehicle object using parameter packing, e.g., 
   Room<Car> r(10, 2, 1, 2, South); 
   Where, the 3 last parameters are (x,y) coordinate for initial position 
@@ -79,6 +103,7 @@ The following scenarios will throw an exception:
 - A vehicle is constructed having an invalid direction. Valid (North - 'N', East - 'E', South - 'S', West - 'W') 
 - If the initial position coordinates of the vehicle uses characters (e.g., 1 N, S 2) 
 - If the room width or length is set by using a character (e.g., 10 N, N 11)
+
 
 
 
