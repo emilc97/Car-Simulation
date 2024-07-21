@@ -69,8 +69,8 @@ int main()
 		Cardinal_Points dir = North; 
 		RoomSize(width, length); 
 		VehiclePosition(x_initial, y_initial, dir); 
-		//construction from rvalue reference (placement new) 
-		Room<Car> r(width, length, Car(x_initial, y_initial, dir));
+		//construction from rvalue reference (placement new)
+		Room<Car> r(width, length, Car(x_initial, y_initial, dir)) ;
 		cout << "Enter a route (F-Forward, B-Back, R-Right, L-Left): ";
 		cin >> str;
 		r.ChangeHeading(str); 

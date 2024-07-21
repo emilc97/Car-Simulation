@@ -23,30 +23,6 @@ enum Cardinal_Points
 
 };
 
-/*@Abstract class Heading
-* @brief Wrapper class for the Cardinal_Points enum for wrap-around
-* The trajectory wrapper class is designated for post-increment
-* and pre-increment of the vehicle Cardinal_Points (S, W, N, E)
-* Each vehicle shall have a trajectory object overriding the 
-* interface (pure v. functions)
-*/
-class Heading
-{
-protected: 
-	Cardinal_Points _cpts;
-public:
-	Heading(Cardinal_Points dir = North) : _cpts{ dir } {};
-	virtual Heading& operator++(int) noexcept = 0;
-	virtual Heading& operator--(int) noexcept = 0;
-	//conversion operator to be treated as an enum 
-	operator Cardinal_Points()
-	{
-		return _cpts;
-	}
-	virtual Cardinal_Points& Get_Cardinal_Points() noexcept = 0; 
-	virtual string HeadingStr() noexcept = 0; 
-
-};
 
 /*@brief Position coordinates with template parameter T*/
 template<typename T> 
@@ -74,7 +50,7 @@ class Vehicle
 	protected: 
 	T _diameter; 
 	Position<T> _coordinates; 
-	unique_ptr<Heading> _heading; 
+	Cardinal_Points _cpts; 
 	public: 
 	virtual void Left() = 0; 
 	virtual void Right() = 0; 
@@ -94,16 +70,28 @@ class Vehicle
 	{
 		return _diameter; 
 	}
-	Vehicle(T x = T(), T y = T(), T diameter = T(), Heading* ptr = nullptr);
+	Vehicle(T x = T(), T y = T(), T diameter = T(), Cardinal_Points dir = North);
 	~Vehicle() = default; 
-	//since unique_ptr it is non-copyable but movable 
-	Vehicle(Vehicle&& obj)
+	
+	Vehicle(const Vehicle& obj)
 	{
 		this->_diameter = obj._diameter; 
 		this->_coordinates = obj._coordinates; 
-		this->_heading = move(obj._heading); 
+		this->_cpts = _cpts; 
 	}
-
+	Vehicle(Vehicle&& obj) noexcept
+	{
+		this->_diameter = obj._diameter;
+		this->_coordinates = obj._coordinates;
+		this->_cpts = _cpts;
+	}
+	virtual Vehicle& operator++(int) noexcept; 
+	virtual Vehicle& operator--(int) noexcept; 
+	virtual string HeadingStr() noexcept; 
+	Cardinal_Points& Get_Cardinal_Points() noexcept
+	{
+		return _cpts; 
+	}
 };
 
 /*@brief Vehicle constructor
@@ -119,7 +107,7 @@ void Vehicle<T>::SetCoordinates(T x, T y) noexcept
 }
 
 template<typename T>
-Vehicle<T>::Vehicle(T x, T y, T diameter, Heading* ptr) : _diameter{ diameter }, _coordinates { x, y }, _heading{ptr}
+Vehicle<T>::Vehicle(T x, T y, T diameter, Cardinal_Points dir) : _diameter{ diameter }, _coordinates { x, y }, _cpts{dir}
 {
 	if (x < 0 || y < 0)
 		throw out_of_range("Coordinates must be non-negative");
@@ -203,7 +191,7 @@ class Room
 	*/
 	string GetHeading() const noexcept
 	{
-		return 	_ptr->_heading->HeadingStr();
+		return 	_ptr->HeadingStr(); 
 	}
 	/*Default destructor*/
 	~Room() = default; 
@@ -345,11 +333,128 @@ Room<V, Args...>::Room(int width, int length, V&& obj) : _width{ width }, _lengt
 	int diameter = obj.GetDiameter(); 
 
 	auto ptr = operator new(sizeof(V));
-	new (ptr) V(move(obj));
+	new (ptr) V(x, y, obj.Get_Cardinal_Points(), diameter); //in place construction 
 	_ptr = move(unique_ptr<V>(static_cast<V*>(ptr)));
 
+	
 	if (width <= 0 || length <= 0)
 		throw invalid_argument("Width and length shall only be positive");
 	else if ((x > width - diameter) || (y > length - diameter))
 		throw out_of_range("Vehicle initial position outside of room");
 }
+
+
+template<typename T>
+string Vehicle<T>::HeadingStr() noexcept
+{
+	string tmp;
+
+	switch (_cpts)
+	{
+	case South:
+		tmp = "South";
+		break;
+	case SouthEast:
+		tmp = "SouthEast";
+		break;
+	case East:
+		tmp = "East";
+		break;
+	case NorthEast:
+		tmp = "NorthEast";
+		break;
+	case North:
+		tmp = "North";
+		break;
+	case NorthWest:
+		tmp = "NorthWest";
+		break;
+	case West:
+		tmp = "West";
+		break;
+	case SouthWest:
+		tmp = "SouthWest";
+		break;
+
+	default:
+		break;
+
+	}
+	return tmp;
+}
+
+template<typename T> 
+Vehicle<T>& Vehicle<T>::operator--(int) noexcept
+{
+	switch (_cpts)
+	{
+	case South:
+		_cpts = SouthEast;
+		break;
+	case SouthEast:
+		_cpts = East;
+		break;
+	case East:
+		_cpts = NorthEast;
+		break;
+	case NorthEast:
+		_cpts = North;
+		break;
+	case North:
+		_cpts = NorthWest;
+		break;
+	case NorthWest:
+		_cpts = West;
+		break;
+	case West:
+		_cpts = SouthWest;
+		break;
+	case SouthWest:
+		_cpts = South;
+		break;
+	default:
+		break;
+	}
+
+	return *this;
+}
+
+template<typename T>
+Vehicle<T>& Vehicle<T>::operator++(int) noexcept
+{
+
+	switch (_cpts)
+	{
+	case South:
+		_cpts = SouthWest;
+		break;
+	case SouthWest:
+		_cpts = West;
+		break;
+	case West:
+		_cpts = NorthWest;
+		break;
+	case NorthWest:
+		_cpts = North;
+		break;
+	case North:
+		_cpts = NorthEast;
+		break;
+	case NorthEast:
+		_cpts = East;
+		break;
+	case East:
+		_cpts = SouthEast;
+		break;
+	case SouthEast:
+		_cpts = South;
+		break;
+	default:
+		break;
+	}
+
+	return *this;
+}
+
+
+

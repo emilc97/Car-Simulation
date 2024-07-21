@@ -2,7 +2,7 @@
 
 void Car::Forward()
 {
-	switch (*_heading)
+	switch (_cpts)
 	{
 	case South:
 		_coordinates.y--;
@@ -25,7 +25,7 @@ void Car::Forward()
 
 void Car::Back()
 {
-	switch (*_heading)
+	switch (_cpts)
 	{
 	case South:
 		_coordinates.y++;
@@ -45,57 +45,20 @@ void Car::Back()
 	}
 }
 
-CarHeading& CarHeading::operator++(int) noexcept
+Car& Car::operator++(int) noexcept
 {
-	Cardinal_Points& dir = Get_Cardinal_Points(); 
-	if (dir == South)
-		dir = West;
-	else if (dir == West)
-		dir = North;
-	else if (dir == North)
-		dir = East;
-	else if (dir == East)
-		dir = South;
+	_base::operator++(0); 
+	_base::operator++(0); 
+	return *this;
+}
+
+Car& Car::operator--(int) noexcept
+{
+	_base::operator--(0); 
+	_base::operator--(0); 
 
 	return *this;
 }
 
-CarHeading& CarHeading::operator--(int) noexcept
-{
-	Cardinal_Points& dir = Get_Cardinal_Points();
-	if (dir == South)
-		dir = East;
-	else if (dir == West)
-		dir = South;
-	else if (dir == North)
-		dir = West;
-	else if (dir == East)
-		dir = North;
 
-	return *this;
-}
 
-string CarHeading::HeadingStr() noexcept 
-{
-	string tmp; 
-	Cardinal_Points dir = Get_Cardinal_Points(); 
-	switch (dir)
-	{
-	case South: 
-		tmp = "South"; 
-		break; 
-	case West:
-		tmp = "West";
-		break;
-	case North:
-		tmp = "South";
-		break;
-	case East:
-		tmp = "West";
-		break;
-	default: 
-			break; 
-
-	}
-	return tmp; 
-}
