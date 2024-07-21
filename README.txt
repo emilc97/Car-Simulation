@@ -26,19 +26,27 @@ and a message regarding end position and heading will be printed to the terminal
 - Cross platform: build system make. 
 
 [DESCRIPTION] 
-The application is implemented using 2 abstract base classes: 
-- Vehicle 
-- Trajectory 
-Each vehicle implements as set of basic methods, such as left, 
-right, forward and back. But also includes a 'trajectory system' 
-which specializes the vehicle for movement in terms of post increment/
-decrement operators. E.g., operator-- could indicate rotation in anti 
-clock-wise direction (north->west->south->east). 
+The application is implemented using one abstract base class Vehicle.
+Each vehicle implements as set of basic methods, purely virtual, such as left, 
+right, forward and back. Additionally, the cardinal points are managed via 
+overloaded ++ and -- operators for wrap-around behaviour. This natively 
+moves from South-> South West ->West .. and vice versa for ++ and -- 
+respectively. The operators could be used each time left/right is 
+called (e.g., Car) or be managed more intelligently depending 
+on the vehicle and derived class specialization. 
 
-A vehicle requires concrete trajectory class (publicly inherited). 
-A room requires an vehicle for construction, either via raw-pointer, 
-smart pointer, move semantics, forwarding or rvalue. 
+Each vehicle holds a coordinate system instantiated using a template 
+parameter. This enables support for movement in both floating point 
+and integral grid. The vehicle allows for public access of its template 
+parameter as 'value_type'. 
 
+The Room requires a concrete type of class Vehicle. This means that 
+all the purely virtual methods needs to be properly overridden. The 
+Room uses the inherent left(), back(), forward(), right() methods 
+to move the vehicle. The type for the underlying vehicle coordinate 
+system is obtained from the Vehicle<T>::value_type. This ensures that methods 
+that uses parameters from the vehicle can work for all types of vehicles. 
+Independent of which template type they were instantiated with. 
 
 [Overloaded Constructors]
 The Room class provides a set of overloaded constructors to support 
