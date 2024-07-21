@@ -52,6 +52,7 @@ class Vehicle
 	Position<T> _coordinates; 
 	Cardinal_Points _cpts; 
 	public: 
+	using value_type = T; 
 	virtual void Left() = 0; 
 	virtual void Right() = 0; 
 	virtual void Forward() = 0; 
@@ -141,11 +142,12 @@ class Room
 		return os; 
 	}
 	public: 
-	
-	Room(int width, int length, Args&&... args); 
-	explicit Room(int width, int length, V* ptr);
-	Room(int width, int length, unique_ptr<V>&& ptr); 
-	Room(int width, int length, V&& obj); 
+	using value_type = typename V::value_type; 
+
+	Room(value_type width, value_type length, Args&&... args);
+	explicit Room(value_type width, value_type length, V* ptr);
+	Room(value_type width, value_type length, unique_ptr<V>&& ptr);
+	Room(value_type width, value_type length, V&& obj);
 
 	/*@brief Invoke native vehicle Left() method*/
 	void Left()
@@ -166,7 +168,7 @@ class Room
 	* @param y: y coordinate 
 	* @retval : None
 	*/
-	void Initial_Position(int x, int y)
+	void Initial_Position(value_type x, value_type y)
 	{
 		_ptr->SetCoordinates(x, y); 
 	}
@@ -270,11 +272,11 @@ void Room<V, Args...>::Forward()
 * @args        : Parameter pack for vehicle constructor
 */
 template<typename V, typename... Args> 
-Room<V,Args...>::Room(int width, int length, Args&&... args) : _width{ width }, _length{ length }, _ptr{ make_unique<V>(args...) }
+Room<V,Args...>::Room(value_type width, value_type length, Args&&... args) : _width{ width }, _length{ length }, _ptr{ make_unique<V>(args...) }
 {
-	int x = _ptr->GetCoordinates().x; 
-	int y = _ptr->GetCoordinates().y; 
-	int diameter = _ptr->GetDiameter();
+	value_type x = _ptr->GetCoordinates().x; 
+	value_type y = _ptr->GetCoordinates().y; 
+	value_type diameter = _ptr->GetDiameter();
 
 	if (width <= 0 || length <= 0)
 		throw invalid_argument("Width and length shall only be positive");
@@ -289,11 +291,11 @@ Room<V,Args...>::Room(int width, int length, Args&&... args) : _width{ width }, 
 * @param ptr   : Vehicle pointer
 */
 template<typename V, typename... Args>
-Room<V, Args...>::Room(int width, int length, V* ptr) : _width{ width }, _length{ length }, _ptr{ ptr }
+Room<V, Args...>::Room(value_type width, value_type length, V* ptr) : _width{ width }, _length{ length }, _ptr{ ptr }
 {
-	int x = _ptr->GetCoordinates().x;
-	int y = _ptr->GetCoordinates().y;
-	int diameter = _ptr->GetDiameter();
+	value_type x = _ptr->GetCoordinates().x;
+	value_type y = _ptr->GetCoordinates().y;
+	value_type diameter = _ptr->GetDiameter();
 
 	if (width <= 0 || length <= 0)
 		throw invalid_argument("Width and length shall only be positive");
@@ -308,11 +310,11 @@ Room<V, Args...>::Room(int width, int length, V* ptr) : _width{ width }, _length
 * @param ptr   : Unique Ptr (rvalue)
 */
 template<typename V, typename... Args>
-Room<V, Args...>::Room(int width, int length, unique_ptr<V>&& ptr) : _width{ width }, _length{ length }, _ptr{ move(ptr) }
+Room<V, Args...>::Room(value_type width, value_type length, unique_ptr<V>&& ptr) : _width{ width }, _length{ length }, _ptr{ move(ptr) }
 {
-	int x = _ptr->GetCoordinates().x;
-	int y = _ptr->GetCoordinates().y;
-	int diameter = _ptr->GetDiameter();
+	value_type x = _ptr->GetCoordinates().x;
+	value_type y = _ptr->GetCoordinates().y;
+	value_type diameter = _ptr->GetDiameter();
 
 	if (width <= 0 || length <= 0)
 		throw invalid_argument("Width and length shall only be positive");
@@ -326,11 +328,11 @@ Room<V, Args...>::Room(int width, int length, unique_ptr<V>&& ptr) : _width{ wid
 * @param obj   : Vehicle object (rvalue)
 */
 template<typename V, typename... Args>
-Room<V, Args...>::Room(int width, int length, V&& obj) : _width{ width }, _length{ length }
+Room<V, Args...>::Room(value_type width, value_type length, V&& obj) : _width{ width }, _length{ length }
 {
-	int x = obj.GetCoordinates().x; 
-	int y = obj.GetCoordinates().y; 
-	int diameter = obj.GetDiameter(); 
+	value_type x = obj.GetCoordinates().x;
+	value_type y = obj.GetCoordinates().y;
+	value_type diameter = obj.GetDiameter();
 
 	auto ptr = operator new(sizeof(V));
 	new (ptr) V(x, y, obj.Get_Cardinal_Points(), diameter); //in place construction 
