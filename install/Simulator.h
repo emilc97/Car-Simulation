@@ -124,9 +124,13 @@ Position<T>& Vehicle<T>::GetCoordinates() noexcept
 template<typename V, typename... Args> 
 class Room
 {
-	int _width; 
-	int _length; 
+	public:
+	using value_type = typename V::value_type;
+	private: 
+	value_type _width; 
+	value_type _length; 
 	unique_ptr<V> _ptr; 
+	public: 
 
 	/*@brief Overload of stream extraction operator 
 	* @param ostream: Output stream object 
@@ -141,8 +145,7 @@ class Room
 		os << "Vehicle position: (" << x << "," << y << ")" << endl;
 		return os; 
 	}
-	public: 
-	using value_type = typename V::value_type; 
+	
 
 	Room(value_type width, value_type length, Args&&... args);
 	explicit Room(value_type width, value_type length, V* ptr);
@@ -176,14 +179,14 @@ class Room
 	/*@brief Get x coordinate 
 	* @retval : x position. 
 	*/
-	int GetXPosition() const
+	value_type GetXPosition() const
 	{
 		return _ptr->GetCoordinates().x; 
 	}
 	/*@brief Get y coordinate
 	* @retval : y position 
 	*/
-	int GetYPosition() const
+	value_type GetYPosition() const
 	{
 		return _ptr->GetCoordinates().y;
 	}

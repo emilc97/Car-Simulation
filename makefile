@@ -5,10 +5,10 @@ TARGET := $(BIN)main
 TEST := $(BIN)test
 CPPFILES := $(wildcard $(SOURCE)*.cpp)
 OBJECTS := $(patsubst $(SOURCE)%.cpp, $(BUILD)%.o, $(CPPFILES))
+TEST_MT := $(BIN)test_sport_truck
+.PHONY: dirs clean install uninstall all info 
 
-.PHONY: dirs clean install uninstall all info
-
-all: $(TARGET) $(TEST)
+all: $(TARGET) $(TEST) $(TEST_MT)
 
 
 info: 
@@ -35,12 +35,21 @@ info:
 	@echo " Build     : $(BUILD)\n"
 	@echo " Target:   : $(TARGET)\n"
 	@echo " Test      : $(TEST)\n"
-	
+
 #$<, $@ generic usage, automatic variables 
-$(TARGET): $(filter-out $(BUILD)test.o,$(OBJECTS))
+$(TEST_MT): $(BUILD)Sport_Truck.o $(BUILD)Test_Sport_Truck.o
 	$(CC) $(CXXFLAGS) $^ -o $@ 
 
-$(TEST): $(filter-out $(BUILD)main.o, $(OBJECTS)) 
+$(BUILD)Sport_Truck.o: Sport_Truck.cpp Simulator.h
+	$(CC) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@ 
+
+$(BUILD)Test_Sport_Truck.o: Test_Sport_Truck.cpp Simulator.h 
+	$(CC) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@ 
+#$<, $@ generic usage, automatic variables 
+$(TARGET): $(filter-out $(BUILD)test.o $(BUILD)Test_Sport_Truck.o,$(OBJECTS))
+	$(CC) $(CXXFLAGS) $^ -o $@ 
+
+$(TEST): $(filter-out $(BUILD)main.o $(BUILD)Test_Sport_Truck.o, $(OBJECTS)) 
 	$(CC) $(CXXFLAGS) $^ -o $@ 
 
 $(BUILD)test.o: test.cpp Simulator.h 
