@@ -3,7 +3,7 @@
 #include "Car.h"
 using namespace std;
 
-
+/*@brief Testing the Simulator library overloaded constructors*/
 void Constructors()
 {
 	cout << "********************Constructors - START******************************" << endl;
@@ -84,6 +84,7 @@ void Constructors()
 	cout << "********************Constructors - END******************************" << "\n\n"; 
 }
 
+/*@brief Test Member Functions of the Simulator Library*/ 
 void Member_Func()
 {
 	cout << "********************Member Functions - START*************************" << endl; 
@@ -97,6 +98,7 @@ void Member_Func()
 	cout << "********************Member Functions - END*************************" << "\n\n"; 
 }
 
+/*@brief Testing car movement in the Simulator Library*/
 void Routes()
 {
 	cout << "*****************Routes Testing - START************************" << endl; 
@@ -132,7 +134,6 @@ void Routes()
 
 int main()
 {
-	//Room<Car, int > r(1, 2, 3); 
 	try
 	{
 		string str; 

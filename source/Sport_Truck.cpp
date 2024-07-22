@@ -1,6 +1,7 @@
 #include "Sport_Truck.h"
 
-void Monster_Truck::Forward()
+/*@brief Sport Truck override of the Vehicle Forward method */
+void Sport_Truck::Forward()
 {
 	switch (_cpts)
 	{
@@ -37,7 +38,8 @@ void Monster_Truck::Forward()
 	}
 }
 
-void Monster_Truck::Back()
+/*@brief Sport Truck override of the Vehicle Back method */
+void Sport_Truck::Back()
 {
 	switch (_cpts)
 	{

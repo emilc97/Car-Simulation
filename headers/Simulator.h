@@ -52,13 +52,24 @@ class Vehicle
 	Position<T> _coordinates; 
 	Cardinal_Points _cpts; 
 	public: 
-	using value_type = T; 
+	using value_type = T; //make the template parameter publicly accessible 
+
 	virtual void Left() = 0; 
 	virtual void Right() = 0; 
 	virtual void Forward() = 0; 
 	virtual void Back() = 0; 
-	Position<T>& GetCoordinates() noexcept; 
-	void SetCoordinates(T x, T y) noexcept; 
+
+	Vehicle(const Vehicle& obj);
+	Vehicle(Vehicle&& obj) noexcept;
+
+	virtual Vehicle& operator++(int) noexcept;
+	virtual Vehicle& operator--(int) noexcept;
+ 
+	Vehicle& operator=(const Vehicle& obj) noexcept; 
+
+	Vehicle(T x = T(), T y = T(), T diameter = T(), Cardinal_Points dir = North);
+	~Vehicle() = default;
+
 	/*@brief  Print vehicle coordinates 
 	* @retval None 
 	*/
@@ -66,40 +77,51 @@ class Vehicle
 	{
 		cout << "(" << _coordinates.x << "," << _coordinates.y << ")" << endl; 
 	}
-	
+
+	//setters
+	void SetCoordinates(T x, T y) noexcept;
+
+	//getters 
+	Position<T>& GetCoordinates() noexcept;
+	virtual string HeadingStr() noexcept;
+
+	/*@brief Get Vehicle Diameter
+	* @retval Diameter
+	*/
 	T GetDiameter() const noexcept
 	{
 		return _diameter; 
 	}
-	Vehicle(T x = T(), T y = T(), T diameter = T(), Cardinal_Points dir = North);
-	~Vehicle() = default; 
-	
-	Vehicle(const Vehicle& obj)
-	{
-		this->_diameter = obj._diameter; 
-		this->_coordinates = obj._coordinates; 
-		this->_cpts = _cpts; 
-	}
-	Vehicle(Vehicle&& obj) noexcept
-	{
-		this->_diameter = obj._diameter;
-		this->_coordinates = obj._coordinates;
-		this->_cpts = _cpts;
-	}
-	virtual Vehicle& operator++(int) noexcept; 
-	virtual Vehicle& operator--(int) noexcept; 
-	virtual string HeadingStr() noexcept; 
+
+	/*brief Get Cardinal Points (North, West ...) 
+	@retval Enum Cardinal Points 
+	*/
 	Cardinal_Points& Get_Cardinal_Points() noexcept
 	{
 		return _cpts; 
 	}
 };
 
-/*@brief Vehicle constructor
-* @param x: x coordinate
-* @param y: y coordinate
-* @throw  : x and y coordinates must be non-negative
-*/
+/*@brief Vehicle Copy Constructor */
+template<typename T> 
+Vehicle<T>::Vehicle(const Vehicle& obj)
+{
+	this->_diameter = obj._diameter;
+	this->_coordinates = obj._coordinates;
+	this->_cpts = _cpts;
+}
+
+/*@brief Vehicle Copy Assignment Operator */
+template<typename T>
+Vehicle<T>& Vehicle<T>::operator=(const Vehicle& obj) noexcept
+{
+	this->_diameter = obj._diameter;
+	this->_coordinates = obj._coordinates;
+	this->_cpts = _cpts;
+	return *this; 
+}
+
+/*@brief Set Coordinates of Vehicle*/
 template<typename T>
 void Vehicle<T>::SetCoordinates(T x, T y) noexcept
 {
@@ -107,6 +129,14 @@ void Vehicle<T>::SetCoordinates(T x, T y) noexcept
 	_coordinates.y = y;
 }
 
+
+/*@brief Vehicle constructor
+* @param x: x coordinate
+* @param y: y coordinate
+* @param diameter: Vehicle Diameter
+* @param dir: Enum Cardinal Points (North, West etc..) 
+* @throw  : x and y coordinates must be non-negative
+*/
 template<typename T>
 Vehicle<T>::Vehicle(T x, T y, T diameter, Cardinal_Points dir) : _diameter{ diameter }, _coordinates { x, y }, _cpts{dir}
 {
@@ -114,22 +144,31 @@ Vehicle<T>::Vehicle(T x, T y, T diameter, Cardinal_Points dir) : _diameter{ diam
 		throw out_of_range("Coordinates must be non-negative");
 }
 
+/*@brief Get Coordinates of the Vehicle 
+* @retval Coordinates
+*/
 template<typename T>
 Position<T>& Vehicle<T>::GetCoordinates() noexcept
 {
 	return _coordinates;
 }
 
-
+/*@class Room 
+* @brief A class representing a Vehicle and 2D-grid 
+* @param V: Template parameter derived from the abstract class Vehicle 
+* @param Args: Used for parameter packing to call the Vehicle Constructor
+*/
 template<typename V, typename... Args> 
 class Room
 {
 	public:
 	using value_type = typename V::value_type;
+
 	private: 
 	value_type _width; 
 	value_type _length; 
 	unique_ptr<V> _ptr; 
+
 	public: 
 
 	/*@brief Overload of stream extraction operator 
@@ -348,7 +387,9 @@ Room<V, Args...>::Room(value_type width, value_type length, V&& obj) : _width{ w
 		throw out_of_range("Vehicle initial position outside of room");
 }
 
-
+/*@brief Get Vehicle Heading
+ *@retval Vehicle heading in string format e.g., "North"
+ */
 template<typename T>
 string Vehicle<T>::HeadingStr() noexcept
 {
@@ -388,6 +429,9 @@ string Vehicle<T>::HeadingStr() noexcept
 	return tmp;
 }
 
+/*@brief Vehicle overloded post decrement opreator
+* @retval Reference to the vehicle object calling the method (*this)
+*/
 template<typename T> 
 Vehicle<T>& Vehicle<T>::operator--(int) noexcept
 {
@@ -424,6 +468,9 @@ Vehicle<T>& Vehicle<T>::operator--(int) noexcept
 	return *this;
 }
 
+/*@brief Vehicle overloded post increment opreator
+* @retval Reference to the vehicle object calling the method (*this)
+*/
 template<typename T>
 Vehicle<T>& Vehicle<T>::operator++(int) noexcept
 {

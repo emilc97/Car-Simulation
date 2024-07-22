@@ -3,7 +3,11 @@
 #include "Simulator.h"
 using namespace std; 
 
-
+/*@class Car 
+* @brief A car is an concrete class of the Vehicle abstract class that supports
+* movement in North, East, South and West direction. Using a inegral 2D-grid 
+* as coordinate system. 
+*/
 class Car : public Vehicle<int>
 {
 public:
