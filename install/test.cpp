@@ -1,13 +1,13 @@
 #include "Simulator.h"
 #include <iostream>
-#include "Car.h"
+#include "Monster_Truck.h"
 using namespace std;
 
 /*@brief Testing the Simulator library overloaded constructors*/
 void Constructors()
 {
 	cout << "********************Constructors - START******************************" << endl;
-	Room<Car, int, int, Cardinal_Points> r(20, 16, 4,5, West);
+	Room<Monster_Truck, int, int, Cardinal_Points> r(20, 16, 4,5, West);
 	cout << "Executing some driving with parameter pack constructor" << endl;
 	r.Forward();
 	r.Right();
@@ -15,7 +15,7 @@ void Constructors()
 	r.Back();
 	cout << "Expected coordinate (3,5)" << endl;
 	cout << r << endl;
-	Room<Car> r2(20, 16, new Car(1, 2, South));
+	Room<Monster_Truck> r2(20, 16, new Monster_Truck(1, 2, South));
 	cout << "Executing some driving with Vehicle allocated using keyword new" << endl;
 	r2.Back();
 	r2.Back();
@@ -24,8 +24,8 @@ void Constructors()
 	r2.Forward();
 	cout << "Expected coordinate (1,5)" << endl; 
 	cout << r2 << endl;
-	unique_ptr<Car> ptr = make_unique<Car>(1, 2, South);
-	Room<Car> r3(20, 16, move(ptr));
+	unique_ptr<Monster_Truck> ptr = make_unique<Monster_Truck>(1, 2, South);
+	Room<Monster_Truck> r3(20, 16, move(ptr));
 	cout << "Executing some driving with already allocated vehicle using unique_ptr (move ownership)" << endl;
 	r3.Back();
 	r3.Back();
@@ -44,7 +44,7 @@ void Constructors()
 	cout << "Expected coordinate (4,2)" << endl;
 	cout << r3 << endl;
 	cout << "Executing some driving with already allocated vehicle using make unique in constructor (move ownership)" << endl;
-	Room<Car> r4(20, 16, make_unique<Car>(8, 10, West));
+	Room<Monster_Truck> r4(20, 16, make_unique<Monster_Truck>(8, 10, West));
 	r4.Back();
 	r4.Back();
 	r4.Back(); 
@@ -63,7 +63,7 @@ void Constructors()
 	cout << "Expected coordinate (13,7)" << endl;
 	cout << r4 << endl;
 	cout << "Executing some driving with placement new constructor" << endl;
-	Room<Car> r5(20, 16, Car(6, 8, West));
+	Room<Monster_Truck> r5(20, 16, Monster_Truck(6, 8, West));
 	r5.Back();
 	r5.Back();
 	r5.Back();
@@ -88,7 +88,7 @@ void Constructors()
 void Member_Func()
 {
 	cout << "********************Member Functions - START*************************" << endl; 
-	Room<Car> r(20, 16, Car(1, 2, South)); 
+	Room<Monster_Truck> r(20, 16, Monster_Truck(1, 2, South)); 
 	r.Initial_Position(12, 11); 
 	cout << "Position shall now be (12, 11)" << endl; 
 	cout << "Using overloaded extraction << operator..." << endl; 
@@ -98,11 +98,11 @@ void Member_Func()
 	cout << "********************Member Functions - END*************************" << "\n\n"; 
 }
 
-/*@brief Testing car movement in the Simulator Library*/
+/*@brief Testing Monster_Truck movement in the Simulator Library*/
 void Routes()
 {
 	cout << "*****************Routes Testing - START************************" << endl; 
-	Room<Car> r(25, 12, Car(4, 4, West)); 
+	Room<Monster_Truck> r(25, 12, Monster_Truck(4, 4, West)); 
 	r.Right(); 
 	r.Forward(); 
 	r.Forward(); 
@@ -142,7 +142,7 @@ int main()
 		//Routes(); 
 		cout << "Enter a route (F- Forward, B-Back, L-Left, R-Right) and end with a newline" << endl; 
 		cin >> str; 
-		Room<Car> r(20, 10, Car(1, 2, North)); 
+		Room<Monster_Truck> r(20, 10, Monster_Truck(1, 2, North)); 
 		r.ChangeHeading(str); 
 	}
 	catch (const exception& e)

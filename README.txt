@@ -32,7 +32,7 @@ right, forward and back. Additionally, the cardinal points are managed via
 overloaded ++ and -- operators for wrap-around behaviour. This natively 
 moves from South-> South West ->West .. and vice versa for ++ and -- 
 respectively. The operators could be used each time left/right is 
-called (e.g., Car) or be managed more intelligently depending 
+called (e.g., Monster Truck) or be managed more intelligently depending 
 on the vehicle and derived class specialization. 
 
 Each vehicle holds a coordinate system instantiated using a template 
@@ -53,16 +53,16 @@ The Room class provides a set of overloaded constructors to support
 parameter packing, c-style pointers, smart pointers and move semantics. 
 
 - Construction of the vehicle object using parameter packing, e.g., 
-  Room<Car> r(10, 2, 1, 2, South); 
+  Room<Monster_Truck> r(10, 2, 1, 2, South); 
   Where, the 3 last parameters are (x,y) coordinate for initial position 
   and initial heading (direction). 
 
 - Construction of the vehicle using vehicle pointer. 
-  Room<Car> r(10,2, new Car(1,2, South); 
+  Room<Monster_Truck> r(10,2, new Monster_Truck(1,2, South); 
 
 - Construction of the vehicle using a unique_ptr to a pre-existing 
   vehicle objects. 
-  Room<Car> r(10,2, make_unique<Car>(1,2,South); 
+  Room<Monster_Truck> r(10,2, make_unique<Monster_Truck>(1,2,South); 
 
 - Construction of the vehicle using placement new for in-place construction
   passing an rvalue reference to a vehicle. 

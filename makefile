@@ -65,7 +65,7 @@ $(BUILD)%.o: $(SOURCE)%.cpp | $(dirs)
 	$(CC) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@ 
 
 #explicit rule for main
-$(BUILD)main.o: main.cpp Simulator.h Car.h | $(dirs)       
+$(BUILD)main.o: main.cpp Simulator.h Monster_Truck.h | $(dirs)       
 	$(CC) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@ 
 
 #out-of-source build 

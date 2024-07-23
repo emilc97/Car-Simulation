@@ -2,7 +2,7 @@
 #include "Simulator.h"
 #include <sstream>
 #include <string>
-#include <Car.h>
+#include <Monster_Truck.h>
 using namespace std; 
 
 /* @brief Set rooms size (width x length) 
@@ -27,13 +27,13 @@ void RoomSize(int& width, int& length)
 /* @brief Set vehicle position (x,y) and initial heading (S, W, N, E) 
 *  @param x  : x coordinate 
 *  @param y  : y coordinate 
-*  @param dir: Initial Heading (Cardinal_Points) 
+*  @param dir: Initial Heading (Monster_Truckdinal_Points) 
 *  @return   : None 
 */
 void VehiclePosition(int& x, int& y, Cardinal_Points& dir)
 {
 	string str, tmp; 
-	cout << "Enter the initial coordinates (position) of the car and heading (S, W, N, E):";
+	cout << "Enter the initial coordinates (position) of the Monster_Truck and heading (S, W, N, E):";
 	getline(cin, str);
 	istringstream isstream{ str }; 
 	if (!(isstream >> x))
@@ -42,7 +42,7 @@ void VehiclePosition(int& x, int& y, Cardinal_Points& dir)
 		throw invalid_argument("Y coordinate must be numeric");
 	isstream >> tmp; //string stream for string to numeric conversion
 
-	//set vehicle Cardinal_Points
+	//set vehicle Monster_Truckdinal_Points
 	if (tmp == string{ 'S' })
 		dir = South;
 	else if (tmp == string{ 'W' })
@@ -52,7 +52,7 @@ void VehiclePosition(int& x, int& y, Cardinal_Points& dir)
 	else if (tmp == string{ 'E' })
 		dir = East;
 	else
-		throw invalid_argument("Invalid Cardinal_Points requested for the vehicle. Valid are (S, W, N, E)"); 
+		throw invalid_argument("Invalid Monster_Truckdinal_Points requested for the vehicle. Valid are (S, W, N, E)"); 
 }
 
 
@@ -70,7 +70,7 @@ int main()
 		RoomSize(width, length); 
 		VehiclePosition(x_initial, y_initial, dir); 
 		//construction from rvalue reference (placement new)
-		Room<Car> r(width, length, Car(x_initial, y_initial, dir)) ;
+		Room<Monster_Truck> r(width, length, Monster_Truck(x_initial, y_initial, dir)) ;
 		cout << "Enter a route (F-Forward, B-Back, R-Right, L-Left): ";
 		cin >> str;
 		r.ChangeHeading(str); 
