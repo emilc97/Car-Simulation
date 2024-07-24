@@ -314,7 +314,7 @@ void Room<V, Args...>::Forward()
 * @args        : Parameter pack for vehicle constructor
 */
 template<typename V, typename... Args> 
-Room<V,Args...>::Room(value_type width, value_type length, Args&&... args) : _width{ width }, _length{ length }, _ptr{ make_unique<V>(args...) }
+Room<V,Args...>::Room(value_type width, value_type length, Args&&... args) : _width{ width }, _length{ length }, _ptr{ make_unique<V>(forward<Args>(args)...) }
 {
 	value_type x = _ptr->GetCoordinates().x; 
 	value_type y = _ptr->GetCoordinates().y; 
