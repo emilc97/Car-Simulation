@@ -15,15 +15,15 @@ and a message regarding end position and heading will be printed to the terminal
 [Features]
 - Templates are used to support a wide range of coordinate types and 
   parameter packing for object construction. 
-- Specialization of vehicles through inheritance through a common 
+- Specialization of vehicles through inheritance using a common 
   abstract base class and trajectory system. 
 - Smart pointer for memory leakage protection and prevention 
-  of stack overflow. Since vehicle derived classes 
-  might differ in terms of memory footprint. 
+  of stack overflow. 
 - Exception handling for invalid input and simulation failure. 
-- The templated classes are header-only to avoid linking 
-  failure during compilation. 
-- Cross platform: build system make. 
+- The templated classes are header-only to problem during 
+  linking due to template instantiation. 
+- Cross platform: The project uses make and is thus compatible 
+  with several platforms and IDEs (e.g., Visual Studio). 
 
 [DESCRIPTION] 
 The application is implemented using one abstract base class Vehicle.
