@@ -10,10 +10,14 @@ void Constructors()
 	Room<Monster_Truck, int, int, Cardinal_Points> r(20, 16, 4,5, West);
 	cout << "Executing some driving with parameter pack constructor" << endl;
 	r.Forward();
+	r.Forward(); 
+	r.Forward(); 
 	r.Right();
 	r.Forward();
 	r.Back();
-	cout << "Expected coordinate (3,5)" << endl;
+	r.Back(); 
+	r.Back(); 
+	cout << "Expected coordinate (1,3)" << endl;
 	cout << r << endl;
 	Room<Monster_Truck> r2(20, 16, new Monster_Truck(1, 2, South));
 	cout << "Executing some driving with Vehicle allocated using keyword new" << endl;
