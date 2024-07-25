@@ -66,7 +66,7 @@ parameter packing, c-style pointers, smart pointers and move semantics.
 
 - Construction of the vehicle using placement new for in-place construction
   passing an rvalue reference to a vehicle. 
-  Room<Monster_Truck>(10, 12, Monster_Truck(1,2, West)); 
+  Room<Monster_Truck> r(10, 12, Monster_Truck(1,2, West)); 
 
 This allows for a diverse set of construction capabilities, which enhances readability 
 and range of applications where the library can be used. 
