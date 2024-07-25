@@ -53,12 +53,12 @@ The Room class provides a set of overloaded constructors to support
 parameter packing, c-style pointers, smart pointers and move semantics. 
 
 - Construction of the vehicle object using parameter packing, e.g., 
-  Room<Monster_Truck> r(10, 2, 1, 2, South); 
+  Room<Monster_Truck> r(10, 12, 1, 2, South); 
   Where, the 3 last parameters are (x,y) coordinate for initial position 
   and initial heading (direction). 
 
 - Construction of the vehicle using vehicle pointer. 
-  Room<Monster_Truck> r(10,2, new Monster_Truck(1,2, South); 
+  Room<Monster_Truck> r(10, 12, new Monster_Truck(1,2, South); 
 
 - Construction of the vehicle using a unique_ptr to a pre-existing 
   vehicle objects. 
@@ -66,6 +66,7 @@ parameter packing, c-style pointers, smart pointers and move semantics.
 
 - Construction of the vehicle using placement new for in-place construction
   passing an rvalue reference to a vehicle. 
+  Room<Monster_Truck>(10, 12, Monster_Truck(1,2, West)); 
 
 This allows for a diverse set of construction capabilities, which enhances readability 
 and range of applications where the library can be used. 
