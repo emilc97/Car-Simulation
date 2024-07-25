@@ -140,7 +140,7 @@ int main()
 		Constructors();
 		Member_Func(); 
 		//Routes(); 
-		cout << "Enter a route (F- Forward, B-Back, L-Left, R-Right) and end with a newline" << endl; 
+		cout << "Enter a route (F- Forward, B-Back, L-Left, R-Right) and end with a newline. Start position will be (1,2):" << endl; 
 		cin >> str; 
 		Room<Monster_Truck> r(20, 10, Monster_Truck(1, 2, North)); 
 		r.ChangeHeading(str); 

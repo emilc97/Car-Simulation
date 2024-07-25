@@ -106,18 +106,18 @@ class Vehicle
 template<typename T> 
 Vehicle<T>::Vehicle(const Vehicle& obj)
 {
-	this->_diameter = obj._diameter;
-	this->_coordinates = obj._coordinates;
-	this->_cpts = _cpts;
+	_diameter = obj._diameter;
+	_coordinates = obj._coordinates;
+	_cpts = obj._cpts;
 }
 
 /*@brief Vehicle Copy Assignment Operator */
 template<typename T>
 Vehicle<T>& Vehicle<T>::operator=(const Vehicle& obj) noexcept
 {
-	this->_diameter = obj._diameter;
-	this->_coordinates = obj._coordinates;
-	this->_cpts = _cpts;
+	_diameter = obj._diameter;
+	_coordinates = obj._coordinates;
+	_cpts = obj._cpts;
 	return *this; 
 }
 
