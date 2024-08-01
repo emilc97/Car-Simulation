@@ -277,7 +277,7 @@ class Room
 
 };
 
-/*@brief  Change current Cardinal_Points (heading) using ASCII character (S, W, N, E)
+/*@brief  Move vehicle or change heading (F-Forward, B - Backward, R - Right, L - Left) 
 * @param  str: String holding the ASCII character 
 * @retval None 
 */
@@ -296,7 +296,7 @@ void Room<V, Args...>::ChangeHeading(string& str)
 		else if (elem == dir[3])
 			Right();
 		else
-			throw invalid_argument("Invalid Cardinal_Points given"); 
+			throw invalid_argument("Invalid vehicle movement"); 
 	}
 }
 
